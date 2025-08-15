@@ -5,12 +5,14 @@ import random
 from .models import Questao, Simulado, Resposta
 from .serializers import QuestaoSerializer, SimuladoSerializer
 from itertools import chain
+from rest_framework.permissions import IsAuthenticated
 
 class QuestaoListCreateAPIView(generics.ListCreateAPIView):
     queryset = Questao.objects.all()
     serializer_class = QuestaoSerializer
 
 class GerarSimuladoAPIView(views.APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         # 1. Pega os dados enviados pelo front-end
         materias = request.data.get('materias', [])
@@ -36,8 +38,7 @@ class GerarSimuladoAPIView(views.APIView):
         questoes_selecionadas = random.sample(list(questoes_disponiveis), num_questoes)
 
         # 4. Cria a instância do Simulado no banco de dados
-        # TODO: Substituir pelo usuário autenticado quando implementarmos o login
-        usuario = User.objects.first() 
+        usuario = self.request.user 
         if not usuario:
             return response.Response({"erro": "Nenhum usuário encontrado para associar ao simulado."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -79,6 +80,7 @@ class SalvarRespostaAPIView(views.APIView):
             return response.Response({"erro": "Simulado ou questão não encontrados."}, status=status.HTTP_404_NOT_FOUND)
         
 class GerarEnemAPIView(views.APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         # Regras do nosso ENEM simplificado
         questoes_por_materia = 2
@@ -99,8 +101,7 @@ class GerarEnemAPIView(views.APIView):
                 random.sample(list(questoes_da_materia), questoes_por_materia)
             )
 
-        # TODO: Substituir pelo usuário autenticado quando implementarmos o login
-        usuario = User.objects.first()
+        usuario = self.request.user
         if not usuario:
             return response.Response({"erro": "Nenhum usuário encontrado."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -109,3 +110,14 @@ class GerarEnemAPIView(views.APIView):
 
         serializer = SimuladoSerializer(simulado)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class MeusSimuladosListView(generics.ListAPIView):
+    serializer_class = SimuladoSerializer
+    # Apenas usuários autenticados podem acessar esta view
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Filtra os simulados para retornar apenas os do usuário logado
+        # A mágica acontece aqui: `self.request.user` é o usuário identificado
+        # pelo token JWT enviado na requisição.
+        return Simulado.objects.filter(usuario=self.request.user).order_by('-data_criacao')

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance';
 
 // Lista de matérias disponíveis. No futuro, podemos buscar isso da API.
 const materiasDisponiveis = [
@@ -43,7 +43,7 @@ function CustomTestPage() {
     };
 
     // Chamada para a nova API usando POST
-    axios.post('http://127.0.0.1:8000/api/gerar-simulado/', configData)
+    apiClient.post('/gerar-simulado/', configData)
       .then(response => {
         console.log("Simulado criado:", response.data);
         const simuladoId = response.data.id;

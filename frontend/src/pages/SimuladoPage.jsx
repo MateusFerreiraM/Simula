@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, CircularProgress, Card, CardContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button } from '@mui/material';
 
 function SimuladoPage() {
@@ -16,7 +16,7 @@ function SimuladoPage() {
 
   useEffect(() => {
     // Busca os dados do simulado específico na nossa nova API
-    axios.get(`http://127.0.0.1:8000/api/simulados/${simuladoId}/`)
+    apiClient.get(`/simulados/${simuladoId}/`)
       .then(response => {
         setSimulado(response.data);
         setLoading(false);
@@ -50,7 +50,7 @@ function SimuladoPage() {
     };
 
     // Envia a resposta para o backend
-    axios.post('http://127.0.0.1:8000/api/salvar-resposta/', dadosResposta)
+    apiClient.post('/salvar-resposta/', dadosResposta)
       .then(response => {
         // Verifica se ainda há questões
         if (indiceQuestaoAtual < simulado.questoes.length - 1) {
