@@ -1,20 +1,25 @@
 # backend/simula/serializers.py
 from rest_framework import serializers
-from .models import Questao
-from .models import Questao, Simulado
+from .models import Questao, Simulado, Resposta # Verifique se Resposta está no import
 
 class QuestaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Questao
-        fields = '__all__' # Isso diz ao serializer para incluir todos os campos do modelo Questao
+        fields = '__all__'
+
+# NOVO SERIALIZER PARA O MODELO RESPOSTA
+class RespostaSerializer(serializers.ModelSerializer):
+    # Incluímos o ID da questão para facilitar a vida do front-end
+    questao_id = serializers.ReadOnlyField(source='questao.id')
+    class Meta:
+        model = Resposta
+        fields = ['questao_id', 'resposta_usuario', 'correta']
+
 
 class SimuladoSerializer(serializers.ModelSerializer):
-    # Usamos o QuestaoSerializer aqui para garantir que as questões
-    # dentro do simulado sejam formatadas corretamente.
-    # 'many=True' indica que é uma lista de questões.
     questoes = QuestaoSerializer(many=True, read_only=True)
+    respostas = RespostaSerializer(many=True, read_only=True, source='resposta_set')
 
     class Meta:
         model = Simulado
-        # Incluímos todos os campos do modelo Simulado
-        fields = '__all__'
+        fields = ['id', 'usuario', 'questoes', 'data_criacao', 'pontuacao_final', 'respostas']

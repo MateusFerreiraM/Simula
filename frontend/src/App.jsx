@@ -5,6 +5,7 @@ import { CssBaseline, Container } from '@mui/material';
 import HomePage from './pages/HomePage';
 import CustomTestPage from './pages/CustomTestPage';
 import SimuladoPage from './pages/SimuladoPage';
+import ResultadoPage from './pages/ResultadoPage';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/personalizado" element={<CustomTestPage />} />
-          {/* 2. Adicione a rota dinâmica para a página do simulado */}
           <Route path="/simulado/:simuladoId" element={<SimuladoPage />} />
+          <Route path="/resultado/:simuladoId" element={<ResultadoPage />} />
         </Routes>
       </Container>
     </>

@@ -1,14 +1,14 @@
 // src/pages/SimuladoPage.jsx
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Typography, Box, CircularProgress, Card, CardContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button } from '@mui/material';
 
 function SimuladoPage() {
   // O hook useParams nos dá acesso aos parâmetros da URL. Ex: o '1' de '/simulado/1'
   const { simuladoId } = useParams();
-
+  const navigate = useNavigate();
   const [simulado, setSimulado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [indiceQuestaoAtual, setIndiceQuestaoAtual] = useState(0);
@@ -28,7 +28,7 @@ function SimuladoPage() {
   }, [simuladoId]); // O useEffect roda novamente se o simuladoId mudar
 
   if (loading) {
-    return <CircularProgress />;
+    return <CircularProgress />;    
   }
 
   if (!simulado) {
@@ -38,9 +38,38 @@ function SimuladoPage() {
   const questaoAtual = simulado.questoes[indiceQuestaoAtual];
 
   const handleProximaQuestao = () => {
-      // Lógica para ir para a próxima questão (faremos isso no próximo passo)
-      alert(`Você respondeu: ${respostaSelecionada}`);
-  }
+    if (!respostaSelecionada) {
+      alert('Por favor, selecione uma alternativa.');
+      return;
+    }
+
+    const dadosResposta = {
+      simulado_id: simulado.id,
+      questao_id: questaoAtual.id,
+      resposta_usuario: respostaSelecionada,
+    };
+
+    // Envia a resposta para o backend
+    axios.post('http://127.0.0.1:8000/api/salvar-resposta/', dadosResposta)
+      .then(response => {
+        // Verifica se ainda há questões
+        if (indiceQuestaoAtual < simulado.questoes.length - 1) {
+          // Se houver, avança para a próxima
+          setIndiceQuestaoAtual(indiceQuestaoAtual + 1);
+          setRespostaSelecionada(''); // Limpa a seleção
+        } else {
+          // Se for a última questão, navega para a página de resultados
+          alert('Simulado finalizado!');
+          navigate(`/resultado/${simulado.id}`);
+        }
+      })
+      .catch(error => {
+        console.error("Erro ao salvar a resposta:", error);
+        alert("Não foi possível salvar sua resposta. Tente novamente.");
+      });
+  };
+
+  const isUltimaQuestao = indiceQuestaoAtual === simulado.questoes.length - 1;
 
   return (
     <Container maxWidth="md">
@@ -70,7 +99,7 @@ function SimuladoPage() {
         </Card>
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
             <Button variant="contained" onClick={handleProximaQuestao}>
-                Próxima Questão
+                {isUltimaQuestao ? 'Finalizar Simulado' : 'Próxima Questão'}
             </Button>
         </Box>
       </Box>

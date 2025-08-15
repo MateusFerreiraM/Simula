@@ -2,9 +2,30 @@
 
 import React from 'react';
 import { Container, Typography, Button, Box, Stack } from '@mui/material';
-import { Link } from 'react-router-dom'; // 1. Importe o Link
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function HomePage() {
+  const navigate = useNavigate(); // 3. Inicialize o hook
+
+  // 4. Crie a função para lidar com o clique
+  const handleIniciarEnem = () => {
+    // Mostra um feedback para o usuário
+    console.log("Iniciando a criação do simulado ENEM...");
+
+    // Faz o POST para o novo endpoint. Não precisamos enviar dados.
+    axios.post('http://127.0.0.1:8000/api/gerar-enem/')
+      .then(response => {
+        const simuladoId = response.data.id;
+        // Navega para a página do simulado recém-criado
+        navigate(`/simulado/${simuladoId}`);
+      })
+      .catch(error => {
+        console.error("Erro ao criar o simulado ENEM:", error);
+        alert("Não foi possível gerar o simulado ENEM. Tente novamente.");
+      });
+  };
+
   return (
     <Container maxWidth="sm">
       <Box 
@@ -24,10 +45,10 @@ function HomePage() {
         </Typography>
 
         <Stack spacing={2} direction="column" sx={{ mt: 3, width: '100%' }}>
-          <Button variant="contained" size="large">
+          {/* 5. Mude o botão para usar a função onClick */}
+          <Button variant="contained" size="large" onClick={handleIniciarEnem}>
             Iniciar Simulado ENEM
           </Button>
-          {/* 2. Faça o botão usar o componente Link para navegar */}
           <Button variant="outlined" size="large" component={Link} to="/personalizado">
             Criar Teste Personalizado
           </Button>
