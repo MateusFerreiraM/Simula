@@ -21,7 +21,7 @@ function Header() {
 
     // Redireciona para a página inicial e força a recarga da página
     // para garantir que todos os estados sejam limpos.
-    navigate('/');
+    navigate('/login');
     window.location.reload();
   };
 
