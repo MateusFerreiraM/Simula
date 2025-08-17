@@ -100,14 +100,25 @@ function ResultadoPage() {
           })}
         </List>
 
-        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-            <Button 
-                variant="contained" 
-                component={RouterLink} 
-                to={veioDoDashboard ? '/dashboard' : '/home'}
-            >
-                {veioDoDashboard ? 'Voltar para o Histórico' : 'Fazer Novo Simulado'}
-            </Button>
+        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center', gap: 2 }}>
+          {/* O botão 'Voltar' ou 'Fazer Novo Simulado' */}
+          <Button 
+            variant="outlined" // Sugestão: Mudar para 'outlined' para dar destaque ao outro botão
+            component={RouterLink} 
+            to={veioDoDashboard ? '/dashboard' : '/home'}
+          >
+            {veioDoDashboard ? 'Voltar para o Histórico' : 'Fazer Novo Simulado'}
+          </Button>
+
+          {/* O botão 'Revisar Prova' */}
+          <Button 
+            variant="contained" 
+            component={RouterLink} 
+            to={`/simulado/${resultado.id}`}
+            state={{ reviewMode: true }}
+          >
+            Revisar Prova
+          </Button>
         </Box>
       </Box>
     </Container>
