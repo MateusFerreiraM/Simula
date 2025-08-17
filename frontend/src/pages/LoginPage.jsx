@@ -25,7 +25,7 @@ function LoginPage() {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
         axios.defaults.headers.common['Authorization'] = `JWT ${response.data.access}`;
-        navigate('/'); // Redireciona para a página inicial
+        navigate('/home'); // Redireciona para a página inicial
       })
       .catch(error => {
         console.error('Erro no login:', error);
