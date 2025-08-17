@@ -1,7 +1,7 @@
 // src/pages/CustomTestPage.jsx
 
 import React, { useState } from 'react';
-import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel } from '@mui/material';
+import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 
@@ -11,13 +11,11 @@ const materiasDisponiveis = [
 ];
 
 function CustomTestPage() {
-  // 2. Inicialize o hook de navegação
   const navigate = useNavigate();
-
   const [materiasSelecionadas, setMateriasSelecionadas] = useState({});
   const [numQuestoes, setNumQuestoes] = useState(10);
+  const [dificuldade, setDificuldade] = useState(""); // 1. Novo estado para a dificuldade
 
-  // Função para lidar com a mudança nos checkboxes
   const handleCheckboxChange = (event) => {
     setMateriasSelecionadas({
       ...materiasSelecionadas,
@@ -25,10 +23,8 @@ function CustomTestPage() {
     });
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Filtra apenas as matérias que estão marcadas como 'true'
     const selecionadas = Object.keys(materiasSelecionadas).filter(materia => materiasSelecionadas[materia]);
 
     if (selecionadas.length === 0) {
@@ -36,23 +32,24 @@ function CustomTestPage() {
       return;
     }
 
-    // Os dados que enviaremos para a API
     const configData = {
       materias: selecionadas,
-      num_questoes: parseInt(numQuestoes, 10), // Garante que é um número
+      num_questoes: parseInt(numQuestoes, 10),
     };
 
-    // Chamada para a nova API usando POST
+    // 2. Adiciona a dificuldade ao corpo da requisição APENAS se uma for selecionada
+    if (dificuldade) {
+      configData.dificuldade = dificuldade;
+    }
+
     apiClient.post('/gerar-simulado/', configData)
       .then(response => {
-        console.log("Simulado criado:", response.data);
         const simuladoId = response.data.id;
-        // Navega para a página do simulado (que criaremos em seguida)
         navigate(`/simulado/${simuladoId}`);
       })
       .catch(error => {
-        console.error("Erro ao criar o simulado:", error.response.data);
-        alert(`Erro: ${error.response.data.erro}`);
+        console.error("Erro ao criar o simulado:", error.response?.data);
+        alert(`Erro: ${error.response?.data?.erro || 'Ocorreu um problema.'}`);
       });
   };
 
@@ -81,6 +78,20 @@ function CustomTestPage() {
               />
             ))}
           </FormGroup>
+        </FormControl>
+          
+        <FormControl component="fieldset" variant="standard" sx={{ my: 3, ml: 5 }}>
+          <FormLabel component="legend">Escolha a dificuldade</FormLabel>
+          <RadioGroup
+            row
+            value={dificuldade}
+            onChange={(e) => setDificuldade(e.target.value)}
+          >
+            <FormControlLabel value="" control={<Radio />} label="Todas" />
+            <FormControlLabel value="F" control={<Radio />} label="Fácil" />
+            <FormControlLabel value="M" control={<Radio />} label="Médio" />
+            <FormControlLabel value="D" control={<Radio />} label="Difícil" />
+          </RadioGroup>
         </FormControl>
 
         <Box sx={{ my: 3 }}>

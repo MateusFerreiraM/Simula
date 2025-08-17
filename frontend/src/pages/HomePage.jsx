@@ -3,7 +3,7 @@
 import React from 'react';
 import { Container, Typography, Button, Box, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance';
 
 function HomePage() {
   const navigate = useNavigate(); // 3. Inicialize o hook
@@ -14,15 +14,15 @@ function HomePage() {
     console.log("Iniciando a criação do simulado ENEM...");
 
     // Faz o POST para o novo endpoint. Não precisamos enviar dados.
-    axios.post('http://127.0.0.1:8000/api/gerar-enem/')
+    apiClient.post('/gerar-enem/')
       .then(response => {
         const simuladoId = response.data.id;
-        // Navega para a página do simulado recém-criado
         navigate(`/simulado/${simuladoId}`);
       })
       .catch(error => {
-        console.error("Erro ao criar o simulado ENEM:", error);
-        alert("Não foi possível gerar o simulado ENEM. Tente novamente.");
+        console.error("Erro ao criar o simulado ENEM:", error.response.data);
+        // Agora o alerta vai mostrar a mensagem de erro específica do backend
+        alert(`Não foi possível gerar o simulado ENEM: ${error.response.data.erro}`);
       });
   };
 

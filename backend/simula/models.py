@@ -70,6 +70,8 @@ class Simulado(models.Model):
     # Campo para guardar a pontuação final, pode ser nulo até o simulado ser finalizado.
     pontuacao_final = models.IntegerField(null=True, blank=True)
 
+    tempo_levado = models.IntegerField(null=True, blank=True, help_text="Duração do simulado em segundos")
+
     def __str__(self):
         return f"Simulado de {self.usuario.username} - {self.id}"
 
