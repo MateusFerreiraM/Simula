@@ -49,6 +49,8 @@ class Questao(models.Model):
     # Campo para armazenar qual das alternativas é a correta
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTA_CHOICES)
 
+    imagem = models.ImageField(upload_to='questoes_imagens/', null=True, blank=True)    
+
     # Esta função define como um objeto 'Questao' será exibido (por exemplo, no painel admin)
     def __str__(self):
         return f"{self.get_materia_display()} - {self.id}"

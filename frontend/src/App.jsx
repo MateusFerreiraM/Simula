@@ -16,7 +16,7 @@ function App() {
     <>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg">
+      <Container maxWidth="md"> 
         <Routes>
           <Route path="/" element={<RootRedirect />} />
           <Route path="/home" element={<HomePage />} /> 

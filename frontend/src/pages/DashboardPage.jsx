@@ -59,7 +59,7 @@ function DashboardPage() {
         {
           label: '% de Acerto',
           data,
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          backgroundColor: 'rgba(76, 175, 76, 0.5)',
         },
       ],
     };

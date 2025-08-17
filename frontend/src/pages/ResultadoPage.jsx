@@ -71,13 +71,26 @@ function ResultadoPage() {
                   primary={`${index + 1}. ${questao.texto}`}
                   secondary={
                     <React.Fragment>
-                      <Typography component="span" variant="body2" color="text.primary" display="block">
+                      {questao.imagem && (
+                        <Box
+                          component="img"
+                          sx={{
+                            maxWidth: '200px',
+                            maxHeight: '150px',
+                            borderRadius: '4px',
+                            mt: 1,
+                          }}
+                          alt={`Imagem para a questão ${questao.id}`}
+                          src={questao.imagem}
+                        />
+                      )}
+                      <Typography component="span" variant="body2" color="text.secondary" display="block">
                         Matéria: {nomeMateria}
                       </Typography>
                       <Typography component="span" variant="body2" color="text.secondary">
-                        Sua resposta: {respostaDoUsuario?.resposta_usuario || "Não respondida"}. 
-                        {' '} | {' '}
-                        Resposta correta: {questao.resposta_correta}
+                        Sua resposta: {respostaDoUsuario?.resposta_usuario || "Não respondida"} 
+                      <br />
+                      Resposta correta: {questao.resposta_correta}
                       </Typography>
                     </React.Fragment>
                   }
