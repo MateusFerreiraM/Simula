@@ -1,6 +1,6 @@
 # 🧠 Simula
 
-![Logo do Simula](./frontend/src/assets/logo-simula.png)
+![Logo do Simula](frontend/src/assets/logo-simula.png)
 
 **Uma plataforma de estudos full-stack, inteligente e interativa, construída com Django e React.**
 
