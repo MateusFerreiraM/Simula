@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from .views import QuestaoListCreateAPIView, GerarSimuladoAPIView, SimuladoDetailAPIView, SalvarRespostaAPIView, GerarEnemAPIView, MeusSimuladosListView, FinalizarSimuladoAPIView
 
 urlpatterns = [
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('questoes/', QuestaoListCreateAPIView.as_view(), name='lista-questoes'),
     path('gerar-simulado/', GerarSimuladoAPIView.as_view(), name='gerar-simulado'),
     path('simulados/<int:pk>/', SimuladoDetailAPIView.as_view(), name='detalhe-simulado'),
