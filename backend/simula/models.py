@@ -58,21 +58,16 @@ class Questao(models.Model):
 
 # Este Model representa uma instância de uma prova realizada por um usuário.
 class Simulado(models.Model):
-    # ForeignKey é um relacionamento "muitos-para-um". Muitos simulados podem pertencer a UM usuário.
-    # on_delete=models.CASCADE significa que, se um usuário for deletado, todos os seus simulados também serão.
+    TIPO_SIMULADO_CHOICES = [
+        ('PERSONALIZADO', 'Personalizado'),
+        ('ENEM', 'ENEM'),
+    ]
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # ManyToManyField é um relacionamento "muitos-para-muitos". UM simulado tem MUITAS questões,
-    # e UMA questão pode aparecer em MUITOS simulados.
     questoes = models.ManyToManyField(Questao)
-
-    # Data e hora em que o simulado foi criado. auto_now_add=True preenche automaticamente com a data atual.
     data_criacao = models.DateTimeField(auto_now_add=True)
-
-    # Campo para guardar a pontuação final, pode ser nulo até o simulado ser finalizado.
     pontuacao_final = models.IntegerField(null=True, blank=True)
-
     tempo_levado = models.IntegerField(null=True, blank=True, help_text="Duração do simulado em segundos")
+    tipo = models.CharField(max_length=15, choices=TIPO_SIMULADO_CHOICES, default='PERSONALIZADO')
 
     def __str__(self):
         return f"Simulado de {self.usuario.username} - {self.id}"

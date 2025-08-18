@@ -37,7 +37,7 @@ class GerarEnemAPIView(views.APIView):
             )
 
         usuario = self.request.user
-        simulado = Simulado.objects.create(usuario=usuario)
+        simulado = Simulado.objects.create(usuario=usuario, tipo='ENEM')
         simulado.questoes.set(questoes_selecionadas)
 
         serializer = SimuladoSerializer(simulado)
@@ -73,7 +73,7 @@ class GerarSimuladoAPIView(views.APIView):
         questoes_selecionadas = random.sample(list(questoes_disponiveis), num_questoes)
 
         usuario = self.request.user
-        simulado = Simulado.objects.create(usuario=usuario)
+        simulado = Simulado.objects.create(usuario=usuario, tipo='PERSONALIZADO')
         simulado.questoes.set(questoes_selecionadas)
 
         serializer = SimuladoSerializer(simulado)

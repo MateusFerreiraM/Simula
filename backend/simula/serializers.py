@@ -22,4 +22,4 @@ class SimuladoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Simulado
-        fields = ['id', 'usuario', 'questoes', 'data_criacao', 'pontuacao_final', 'respostas', 'tempo_levado']
+        fields = ['id', 'usuario', 'questoes', 'data_criacao', 'pontuacao_final', 'respostas', 'tempo_levado', 'tipo']
