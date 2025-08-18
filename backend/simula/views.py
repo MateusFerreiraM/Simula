@@ -1,69 +1,39 @@
-# backend/simula/views.py
-from rest_framework import generics, views, response, status
-from django.contrib.auth.models import User
 import random
+from rest_framework import generics, views, response, status
+from rest_framework.permissions import IsAuthenticated
 from .models import Questao, Simulado, Resposta
 from .serializers import QuestaoSerializer, SimuladoSerializer
-from itertools import chain
-from rest_framework.permissions import IsAuthenticated
 
 class QuestaoListCreateAPIView(generics.ListCreateAPIView):
+    """
+    Endpoint público para listar todas as questões disponíveis.
+    Não requer autenticação.
+    """
     queryset = Questao.objects.all()
     serializer_class = QuestaoSerializer
 
-class GerarEnemAPIView(views.APIView):
+class GerarSimuladoAPIView(views.APIView):
+    """
+    Endpoint para criar um novo Simulado Personalizado para o usuário autenticado.
+    Recebe uma lista de matérias, número de questões e dificuldade opcional.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        questoes_por_materia = 2
-        materias = ['matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia']
+        materias = request.data.get('materias', [])
+        num_questoes = request.data.get('num_questoes', 10)
+        dificuldade = request.data.get('dificuldade', None)
 
-        questoes_selecionadas = []
-        for materia in materias:
-            questoes_da_materia = Questao.objects.filter(materia=materia)
-
-            if questoes_da_materia.count() < questoes_por_materia:
-                continue 
-
-            questoes_selecionadas.extend(
-                random.sample(list(questoes_da_materia), questoes_por_materia)
-            )
-
-        # ADICIONE ESTA NOVA VERIFICAÇÃO AQUI
-        if not questoes_selecionadas:
+        if not materias or not num_questoes:
             return response.Response(
-                {"erro": "Não há questões suficientes no banco de dados para gerar um simulado ENEM. Verifique se há pelo menos 2 questões de cada matéria cadastradas no admin."},
+                {"erro": "Matérias e número de questões são obrigatórios."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        usuario = self.request.user
-        simulado = Simulado.objects.create(usuario=usuario, tipo='ENEM')
-        simulado.questoes.set(questoes_selecionadas)
-
-        serializer = SimuladoSerializer(simulado)
-        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-
-class GerarSimuladoAPIView(views.APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        # 1. Pega os dados enviados pelo front-end, incluindo a nova 'dificuldade'
-        materias = request.data.get('materias', [])
-        num_questoes = request.data.get('num_questoes', 10)
-        dificuldade = request.data.get('dificuldade', None) # Novo!
-
-        # ... (validação básica existente) ...
-        if not materias or not num_questoes:
-            return response.Response(...)
-
-        # 2. Inicia a filtragem pelas matérias selecionadas
         questoes_disponiveis = Questao.objects.filter(materia__in=materias)
-
-        # 3. Se uma dificuldade foi especificada, adiciona um filtro extra
         if dificuldade:
             questoes_disponiveis = questoes_disponiveis.filter(dificuldade=dificuldade)
 
-        # ... (lógica existente para selecionar questões e criar o simulado) ...
         if questoes_disponiveis.count() < num_questoes:
             return response.Response(
                 {"erro": "Não há questões suficientes para os filtros selecionados."},
@@ -71,56 +41,97 @@ class GerarSimuladoAPIView(views.APIView):
             )
 
         questoes_selecionadas = random.sample(list(questoes_disponiveis), num_questoes)
-
-        usuario = self.request.user
-        simulado = Simulado.objects.create(usuario=usuario, tipo='PERSONALIZADO')
+        simulado = Simulado.objects.create(usuario=request.user, tipo='PERSONALIZADO')
         simulado.questoes.set(questoes_selecionadas)
 
         serializer = SimuladoSerializer(simulado)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
+class GerarEnemAPIView(views.APIView):
+    """
+    Endpoint para criar um novo Simulado estilo ENEM para o usuário autenticado.
+    Usa regras pré-definidas para selecionar as questões.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        questoes_por_materia = 2
+        materias = ['matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia']
+        questoes_selecionadas = []
+
+        for materia in materias:
+            questoes_da_materia = Questao.objects.filter(materia=materia)
+            if questoes_da_materia.count() >= questoes_por_materia:
+                questoes_selecionadas.extend(
+                    random.sample(list(questoes_da_materia), questoes_por_materia)
+                )
+
+        if not questoes_selecionadas:
+            return response.Response(
+                {"erro": "Não há questões suficientes no banco de dados para gerar um simulado ENEM."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        simulado = Simulado.objects.create(usuario=request.user, tipo='ENEM')
+        simulado.questoes.set(questoes_selecionadas)
+
+        serializer = SimuladoSerializer(simulado)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
 class SimuladoDetailAPIView(generics.RetrieveAPIView):
-    queryset = Simulado.objects.all()
+    """
+    Endpoint para buscar os detalhes de um simulado específico.
+    Apenas o usuário dono do simulado pode acessá-lo.
+    """
     serializer_class = SimuladoSerializer
-    # 'lookup_field' não é estritamente necessário se o parâmetro na URL for 'pk',
-    # mas é uma boa prática ser explícito.
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Garante que um usuário só possa ver os próprios simulados
+        return Simulado.objects.filter(usuario=self.request.user)
+
+class MeusSimuladosListView(generics.ListAPIView):
+    """
+    Endpoint para listar todos os simulados completados pelo usuário autenticado.
+    """
+    serializer_class = SimuladoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Simulado.objects.filter(usuario=self.request.user).order_by('-data_criacao')
 
 class SalvarRespostaAPIView(views.APIView):
+    """
+    Endpoint para salvar a resposta de um usuário para uma questão de um simulado.
+    """
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         simulado_id = request.data.get('simulado_id')
         questao_id = request.data.get('questao_id')
         resposta_usuario = request.data.get('resposta_usuario')
 
         try:
-            simulado = Simulado.objects.get(id=simulado_id)
+            # Garante que o usuário só possa modificar seu próprio simulado
+            simulado = Simulado.objects.get(id=simulado_id, usuario=request.user)
             questao = Questao.objects.get(id=questao_id)
 
-            # Verifica se a resposta está correta
             esta_correta = (questao.resposta_correta == resposta_usuario)
 
-            # Cria ou atualiza a resposta no banco de dados
             Resposta.objects.update_or_create(
                 simulado=simulado,
                 questao=questao,
                 defaults={'resposta_usuario': resposta_usuario, 'correta': esta_correta}
             )
-
             return response.Response({"status": "sucesso"}, status=status.HTTP_200_OK)
         except (Simulado.DoesNotExist, Questao.DoesNotExist):
             return response.Response({"erro": "Simulado ou questão não encontrados."}, status=status.HTTP_404_NOT_FOUND)
-    
-class MeusSimuladosListView(generics.ListAPIView):
-    serializer_class = SimuladoSerializer
-    # Apenas usuários autenticados podem acessar esta view
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        # Filtra os simulados para retornar apenas os do usuário logado
-        # A mágica acontece aqui: `self.request.user` é o usuário identificado
-        # pelo token JWT enviado na requisição.
-        return Simulado.objects.filter(usuario=self.request.user).order_by('-data_criacao')
 
 class FinalizarSimuladoAPIView(views.APIView):
+    """
+    Endpoint para marcar um simulado como finalizado, salvando o tempo
+    gasto e a pontuação final.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -129,11 +140,8 @@ class FinalizarSimuladoAPIView(views.APIView):
 
         try:
             simulado = Simulado.objects.get(id=simulado_id, usuario=request.user)
-
-            # Calcula a pontuação final no back-end
             respostas_corretas = Resposta.objects.filter(simulado=simulado, correta=True).count()
-
-            # Salva o tempo e a pontuação final
+            
             simulado.tempo_levado = tempo_levado
             simulado.pontuacao_final = respostas_corretas
             simulado.save()

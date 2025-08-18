@@ -1,12 +1,138 @@
-# React + Vite
+# 🧠 Simula
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Logo do Simula](./frontend/src/assets/logo-simula.png)
 
-Currently, two official plugins are available:
+**Uma plataforma de estudos full-stack, inteligente e interativa, construída com Django e React.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este projeto é uma aplicação web completa projetada para ajudar estudantes a se prepararem para exames através de simulados personalizados e análises de desempenho detalhadas. A plataforma oferece dois modos de estudo, um dashboard completo com gráficos e um sistema de autenticação seguro.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Principais Funcionalidades
+
+- **Autenticação de Usuários:** Sistema completo de cadastro e login com tokens JWT, garantindo que cada usuário tenha seu próprio histórico e dados seguros.
+- **Modo Simulado ENEM:** Gera uma prova com uma estrutura fixa de questões, simulando a experiência do exame real.
+- **Modo Teste Personalizado:** Permite ao usuário total controle sobre seu estudo, com filtros por matéria, dificuldade e número de questões.
+- **Dashboard de Desempenho:** Uma central de inteligência que exibe:
+    - Métricas gerais (percentual de acerto, total de questões).
+    - Gráfico de desempenho por matéria para identificar pontos fortes e fracos.
+    - Gráficos comparativos de performance entre os modos de prova (ENEM vs. Personalizado).
+- **Histórico de Provas:** Todos os simulados realizados ficam salvos, com suas respectivas pontuações e tempo de duração.
+- **Modo de Revisão:** Após finalizar um teste, o usuário pode revisar cada questão para ver sua resposta, a resposta correta e aprender com os erros.
+- **Suporte a Imagens:** As questões podem incluir imagens para um contexto visual mais rico.
+- **Cronômetro Integrado:** As provas têm um tempo limite, adicionando um desafio extra e simulando as condições reais de um exame.
+
+---
+
+## 🚀 Acesso e Demonstração
+
+Você pode testar a aplicação completa nos links abaixo:
+
+- **Frontend (Vercel):** https://simula-six.vercel.app/
+- **Backend API (Render):** https://simula.onrender.com/api/questoes/
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+A aplicação foi construída utilizando uma arquitetura moderna, separando o back-end e o front-end.
+
+### **Back-end (Servidor)**
+- **Linguagem:** Python 3
+- **Framework:** Django
+- **API:** Django REST Framework
+- **Banco de Dados:** PostgreSQL
+- **Autenticação:** Djoser & Simple JWT
+- **Servidor de Produção:** Gunicorn & WhiteNoise
+
+### **Front-end (Interface)**
+- **Biblioteca:** React 18
+- **Build Tool:** Vite
+- **Roteamento:** React Router DOM
+- **UI/Componentes:** Material-UI (MUI)
+- **Gráficos:** Chart.js
+- **Cliente HTTP:** Axios
+
+### **Deploy (Hospedagem)**
+- **Back-end:** Render
+- **Front-end:** Vercel
+
+---
+
+## ⚙️ Como Rodar o Projeto Localmente
+
+Para executar este projeto na sua máquina, siga os passos abaixo.
+
+### **Pré-requisitos**
+- [Git](https://git-scm.com/)
+- [Python](https://www.python.org/downloads/) (versão 3.8 ou superior)
+- [Node.js e npm](https://nodejs.org/en/) (versão LTS recomendada)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+### **Instalação**
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/MateusFerreiraM/Simula.git
+    cd Simula
+    ```
+
+2.  **Configure o Back-end:**
+    ```bash
+    # Navegue até a pasta do backend
+    cd backend
+
+    # Crie e ative um ambiente virtual
+    python -m venv venv
+    # No Windows:
+    .\venv\Scripts\activate
+    # No macOS/Linux:
+    # source venv/bin/activate
+
+    # Instale as dependências
+    pip install -r requirements.txt
+
+    # Crie um arquivo .env na pasta 'backend' e configure suas variáveis
+    # de ambiente (SECRET_KEY, DEBUG=True, DATABASE_URL).
+
+    # Aplique as migrações no seu banco de dados PostgreSQL local
+    python manage.py migrate
+    ```
+
+3.  **Configure o Front-end:**
+    ```bash
+    # A partir da raiz do projeto, navegue até a pasta do frontend
+    cd ../frontend
+
+    # Instale as dependências
+    npm install
+    ```
+
+### **Execução**
+
+Você precisará de **dois terminais** abertos para rodar a aplicação.
+
+-   **Terminal 1 (Back-end):**
+    ```bash
+    cd backend
+    .\venv\Scripts\activate
+    python manage.py runserver
+    ```
+    O servidor Django estará rodando em `http://127.0.0.1:8000`.
+
+-   **Terminal 2 (Front-end):**
+    ```bash
+    cd frontend
+    npm run dev
+    ```
+    A aplicação React estará acessível em `http://localhost:5173`.
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
+---
+
+*Desenvolvido por Mateus Ferreira Machado*

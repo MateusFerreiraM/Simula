@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link as RouterLink, useLocation } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
-import { Container, Typography, Box, CircularProgress, Card, CardContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Chip, IconButton } from '@mui/material';
+import { Container, Typography, Box, CircularProgress, Card, CardContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Chip } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+/**
+ * Formata um número total de segundos para o formato de string MM:SS.
+ */
 const formatarTempo = (segundos) => {
     if (segundos === null || segundos < 0) return "00:00";
     const minutos = Math.floor(segundos / 60);
@@ -12,13 +15,20 @@ const formatarTempo = (segundos) => {
     return `${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
 };
 
+/**
+ * Página principal do simulado, opera em dois modos:
+ * 1. Modo Teste: O usuário responde às questões contra o tempo.
+ * 2. Modo Revisão: O usuário revisa uma prova já concluída, vendo suas respostas e as corretas.
+ */
 function SimuladoPage() {
   const { simuladoId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Determina o modo de operação (Teste ou Revisão) a partir do state da rota.
   const reviewMode = location.state?.reviewMode || false;
 
+  // Estados do componente
   const [simulado, setSimulado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [indiceQuestaoAtual, setIndiceQuestaoAtual] = useState(0);
@@ -27,21 +37,25 @@ function SimuladoPage() {
   const [endTime, setEndTime] = useState(null);
   const [mapaRespostas, setMapaRespostas] = useState({});
 
+  // Efeito para buscar os dados do simulado da API.
   useEffect(() => {
     apiClient.get(`/simulados/${simuladoId}/`)
       .then(response => {
-        setSimulado(response.data);
+        const simuladoData = response.data;
+        setSimulado(simuladoData);
+
         if (!reviewMode) {
-          const tempoTotalEmSegundos = response.data.questoes.length * 180;
+          const tempoTotalEmSegundos = simuladoData.questoes.length * 180; // 3 min por questão
           setTempoRestante(tempoTotalEmSegundos);
           setEndTime(Date.now() + tempoTotalEmSegundos * 1000);
           localStorage.setItem('simulado_start_time', Date.now());
         }
-        const respostas = response.data.respostas.reduce((map, resp) => {
+
+        const respostasMap = simuladoData.respostas.reduce((map, resp) => {
             map[resp.questao_id] = resp.resposta_usuario;
             return map;
         }, {});
-        setMapaRespostas(respostas);
+        setMapaRespostas(respostasMap);
         setLoading(false);
       })
       .catch(error => {
@@ -50,20 +64,7 @@ function SimuladoPage() {
       });
   }, [simuladoId, reviewMode]);
 
-  const finalizarSimulado = () => {
-    const startTimeFromStorage = localStorage.getItem('simulado_start_time');
-    const duracaoEmSegundos = Math.round((Date.now() - startTimeFromStorage) / 1000);
-
-    apiClient.post(`/simulados/${simuladoId}/finalizar/`, { tempo_levado: duracaoEmSegundos })
-        .then(() => {
-            navigate(`/resultado/${simuladoId}`);
-        })
-        .catch(error => {
-            console.error("Erro ao finalizar o simulado:", error);
-            alert("Houve um erro ao finalizar seu simulado.");
-        });
-  };
-
+  // Efeito que controla o cronômetro.
   useEffect(() => {
     if (reviewMode || !endTime) return;
 
@@ -78,8 +79,27 @@ function SimuladoPage() {
       }
     }, 1000);
     return () => clearInterval(timerId);
-  }, [endTime, reviewMode]);
+  }, [endTime, reviewMode, navigate, simuladoId]);
 
+  /**
+   * Chamado quando o simulado termina, seja pelo tempo ou pelo usuário.
+   * Calcula a duração e envia para o backend antes de navegar para a página de resultados.
+   */
+  const finalizarSimulado = () => {
+    const startTimeFromStorage = localStorage.getItem('simulado_start_time');
+    const duracaoEmSegundos = Math.round((Date.now() - startTimeFromStorage) / 1000);
+
+    apiClient.post(`/simulados/${simuladoId}/finalizar/`, { tempo_levado: duracaoEmSegundos })
+        .then(() => navigate(`/resultado/${simuladoId}`))
+        .catch(error => {
+            console.error("Erro ao finalizar o simulado:", error);
+            alert("Houve um erro ao finalizar seu simulado.");
+        });
+  };
+
+  /**
+   * Lida com o envio da resposta do usuário e avança para a próxima questão ou finaliza o simulado.
+   */
   const handleProximaQuestao = () => {
     if (!respostaSelecionada) {
       alert('Por favor, selecione uma alternativa.');
@@ -92,8 +112,6 @@ function SimuladoPage() {
       resposta_usuario: respostaSelecionada,
     };
     
-    console.log("Enviando para /salvar-resposta/:", dadosResposta);
-
     apiClient.post('/salvar-resposta/', dadosResposta)
       .then(() => {
         if (indiceQuestaoAtual < simulado.questoes.length - 1) {
@@ -109,12 +127,17 @@ function SimuladoPage() {
       });
   };
 
+  /**
+   * Controla a navegação para frente e para trás no modo de revisão.
+   */
   const handleNavegacaoRevisao = (direcao) => {
       const novoIndice = indiceQuestaoAtual + direcao;
       if (novoIndice >= 0 && novoIndice < simulado.questoes.length) {
           setIndiceQuestaoAtual(novoIndice);
       }
   };
+
+  // --- Renderização do Componente ---
 
   if (loading) {
     return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
@@ -129,7 +152,7 @@ function SimuladoPage() {
       <Container sx={{ my: 4, textAlign: 'center' }}>
         <Typography variant="h5">Erro ao Carregar Simulado</Typography>
         <Typography sx={{ my: 2 }}>
-          Este simulado não contém nenhuma questão. Isso pode acontecer se não houver questões suficientes no banco de dados para os filtros que você selecionou.
+          Este simulado não contém nenhuma questão.
         </Typography>
         <Button component={RouterLink} to="/home" variant="contained">
           Voltar para o Início
@@ -140,7 +163,7 @@ function SimuladoPage() {
   
   const questaoAtual = simulado.questoes[indiceQuestaoAtual];
   if (!questaoAtual) {
-    return <Typography>Erro: Não foi possível carregar a questão atual.</Typography>;
+    return <Typography sx={{ textAlign: 'center', mt: 4 }}>Erro: Não foi possível carregar a questão atual.</Typography>;
   }
   const isUltimaQuestao = indiceQuestaoAtual === simulado.questoes.length - 1;
   const respostaDoUsuarioParaQuestaoAtual = mapaRespostas[questaoAtual.id];
@@ -158,7 +181,11 @@ function SimuladoPage() {
           <CardContent>
             <Typography variant="h6" component="h2">Questão {indiceQuestaoAtual + 1} de {simulado.questoes.length}</Typography>
             <Typography sx={{ my: 2 }}>{questaoAtual.texto}</Typography>
-            {questaoAtual.imagem && <Box component="img" sx={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', my: 2, textAlign: 'center' }} alt={`Imagem para a questão ${questaoAtual.id}`} src={questaoAtual.imagem}/>}
+            {questaoAtual.imagem && (
+              <Box sx={{ my: 2, textAlign: 'center' }}>
+                <Box component="img" sx={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px' }} alt={`Imagem para a questão ${questaoAtual.id}`} src={questaoAtual.imagem}/>
+              </Box>
+            )}
             <FormControl component="fieldset" disabled={reviewMode}>
               <FormLabel component="legend">Alternativas</FormLabel>
               <RadioGroup value={reviewMode ? respostaDoUsuarioParaQuestaoAtual || '' : respostaSelecionada} onChange={(e) => setRespostaSelecionada(e.target.value)}>
@@ -195,7 +222,7 @@ function SimuladoPage() {
             <>
               <Button variant="outlined" startIcon={<ArrowBackIosNewIcon />} onClick={() => handleNavegacaoRevisao(-1)} disabled={indiceQuestaoAtual === 0}>Anterior</Button>
               <Typography>{indiceQuestaoAtual + 1} / {simulado.questoes.length}</Typography>
-              <Button variant="outlined" endIcon={<ArrowForwardIosIcon />} onClick={() => handleNavegacaoRevisao(1)} disabled={indiceQuestaoAtual === simulado.questoes.length - 1}>Próxima</Button>
+              <Button variant="outlined" endIcon={<ArrowForwardIosIcon />} onClick={() => handleNavegacaoRevisao(1)} disabled={isUltimaQuestao}>Próxima</Button>
             </>
           ) : (
             <Button variant="contained" onClick={handleProximaQuestao} sx={{ ml: 'auto' }}>

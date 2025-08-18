@@ -1,10 +1,11 @@
-// src/pages/LoginPage.jsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 
+/**
+ * Página de login de usuários.
+ */
 function LoginPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -18,14 +19,11 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/auth/jwt/create/', formData)
+    apiClient.post('/auth/jwt/create/', formData)
       .then(response => {
-        console.log("Login bem-sucedido:", response.data);
-        // Salva o token de acesso no localStorage do navegador
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
-        axios.defaults.headers.common['Authorization'] = `JWT ${response.data.access}`;
-        navigate('/home'); // Redireciona para a página inicial
+        navigate('/home');
       })
       .catch(error => {
         console.error('Erro no login:', error);

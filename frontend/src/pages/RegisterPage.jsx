@@ -1,10 +1,11 @@
-// src/pages/RegisterPage.jsx
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 
+/**
+ * Página de cadastro de novos usuários.
+ */
 function RegisterPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -20,18 +21,15 @@ function RegisterPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/auth/users/', formData)
+    apiClient.post('/auth/users/', formData)
       .then(response => {
-        console.log("Usuário criado:", response.data);
         alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
         navigate('/login');
       })
       .catch(error => {
-        console.error('Erro no cadastro:', error.response.data);
-        // Transforma os erros da API em uma string para exibir no alerta
-        const errorData = error.response.data;
+        const errorData = error.response?.data || {};
         const errorMessages = Object.keys(errorData).map(key => `${key}: ${errorData[key].join(', ')}`).join('\n');
-        alert(`Erro no cadastro:\n${errorMessages}`);
+        alert(`Erro no cadastro:\n${errorMessages || 'Ocorreu um problema.'}`);
       });
   };
 

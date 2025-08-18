@@ -1,4 +1,3 @@
-# backend/simula/urls.py
 from django.urls import path
 from .views import QuestaoListCreateAPIView, GerarSimuladoAPIView, SimuladoDetailAPIView, SalvarRespostaAPIView, GerarEnemAPIView, MeusSimuladosListView, FinalizarSimuladoAPIView
 

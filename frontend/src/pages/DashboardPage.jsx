@@ -5,10 +5,8 @@ import { Container, Typography, Box, CircularProgress, Paper, Grid, Divider, Lis
 import GraficoDesempenho from '../components/GraficoDesempenho';
 import GraficoRadar from '../components/GraficoRadar';
 
-// Lista de todas as matérias para garantir que os gráficos sejam consistentes
 const todasAsMaterias = ['matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia'];
 
-// Componente auxiliar para os cartões de estatística
 const StatCard = ({ title, value }) => (
   <Paper elevation={3} sx={{ p: 2, textAlign: 'center', height: '100%' }}>
     <Typography variant="subtitle1" color="text.secondary">{title}</Typography>
@@ -42,9 +40,7 @@ function DashboardPage() {
         setSimulados(simuladosData);
 
         if (simuladosData && simuladosData.length > 0) {
-          // --- Processamento dos Dados ---
 
-          // 1. Stats Gerais para os Cards
           let totalAcertos = 0;
           let totalQuestoes = 0;
           simuladosData.forEach(s => {
@@ -57,7 +53,6 @@ function DashboardPage() {
             simuladosFeitos: simuladosData.length,
           });
 
-          // 2. Dados para o Gráfico de Barras (Desempenho Geral por Matéria)
           const processarDadosBarras = (sims) => {
             const estatisticas = {};
             todasAsMaterias.forEach(m => { estatisticas[m] = { total: 0, acertos: 0 } });
@@ -74,7 +69,6 @@ function DashboardPage() {
           };
           setDadosGraficoBarras(processarDadosBarras(simuladosData));
           
-          // 3. Dados para os Gráficos de Radar (Comparativo por Modo)
           const gerarDadosRadar = (simuladosFiltrados, cor) => {
             if (simuladosFiltrados.length === 0) return null;
             const estatisticas = {};
@@ -112,21 +106,18 @@ function DashboardPage() {
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>Meu Dashboard</Typography>
         
-        {/* SEÇÃO 1: VISÃO GERAL */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid item xs={12} sm={4}><StatCard title="Acerto Geral" value={stats.acertoGeral} /></Grid>
           <Grid item xs={12} sm={4}><StatCard title="Questões Respondidas" value={stats.questoesRespondidas} /></Grid>
           <Grid item xs={12} sm={4}><StatCard title="Simulados Feitos" value={stats.simuladosFeitos} /></Grid>
         </Grid>
         
-        {/* SEÇÃO 2: GRÁFICO DE BARRAS */}
         {dadosGraficoBarras && (
           <Paper sx={{ p: 2, mb: 4 }}>
             <GraficoDesempenho dadosDoGrafico={dadosGraficoBarras} />
           </Paper>
         )}
         
-        {/* SEÇÃO 3: GRÁFICOS DE RADAR */}
         {(dadosRadarEnem || dadosRadarPersonalizado) && (
           <>
             <Typography variant="h5" component="h2" gutterBottom>Análise Comparativa por Modo</Typography>
@@ -147,7 +138,6 @@ function DashboardPage() {
         
         <Divider sx={{ mb: 4 }} />
         
-        {/* SEÇÃO 4: HISTÓRICO DE SIMULADOS */}
         <Typography variant="h5" component="h2" gutterBottom>Histórico de Simulados</Typography>
         {simulados.length > 0 ? (
           <List component={Paper}>

@@ -1,26 +1,25 @@
-// src/pages/CustomTestPage.jsx
-
 import React, { useState } from 'react';
-import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
+import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
 
-// Lista de matérias disponíveis. No futuro, podemos buscar isso da API.
+// TODO: No futuro, esta lista pode ser buscada da API para ser mais dinâmica.
 const materiasDisponiveis = [
   'matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia'
 ];
 
+/**
+ * Página onde o usuário personaliza seu simulado, escolhendo
+ * matérias, dificuldade e número de questões.
+ */
 function CustomTestPage() {
   const navigate = useNavigate();
   const [materiasSelecionadas, setMateriasSelecionadas] = useState({});
   const [numQuestoes, setNumQuestoes] = useState(10);
-  const [dificuldade, setDificuldade] = useState(""); // 1. Novo estado para a dificuldade
+  const [dificuldade, setDificuldade] = useState("");
 
   const handleCheckboxChange = (event) => {
-    setMateriasSelecionadas({
-      ...materiasSelecionadas,
-      [event.target.name]: event.target.checked,
-    });
+    setMateriasSelecionadas({ ...materiasSelecionadas, [event.target.name]: event.target.checked });
   };
 
   const handleSubmit = (event) => {
@@ -37,15 +36,13 @@ function CustomTestPage() {
       num_questoes: parseInt(numQuestoes, 10),
     };
 
-    // 2. Adiciona a dificuldade ao corpo da requisição APENAS se uma for selecionada
     if (dificuldade) {
       configData.dificuldade = dificuldade;
     }
 
     apiClient.post('/gerar-simulado/', configData)
       .then(response => {
-        const simuladoId = response.data.id;
-        navigate(`/simulado/${simuladoId}`);
+        navigate(`/simulado/${response.data.id}`);
       })
       .catch(error => {
         console.error("Erro ao criar o simulado:", error.response?.data);
@@ -62,31 +59,20 @@ function CustomTestPage() {
 
         <FormControl component="fieldset" variant="standard" sx={{ my: 3 }}>
           <FormLabel component="legend">Escolha as matérias</FormLabel>
-          <FormGroup>
+          <FormGroup row>
             {materiasDisponiveis.map((materia) => (
               <FormControlLabel
                 key={materia}
-                control={
-                  <Checkbox 
-                    checked={materiasSelecionadas[materia] || false} 
-                    onChange={handleCheckboxChange} 
-                    name={materia} 
-                  />
-                }
-                // Transforma 'matematica' em 'Matemática' para exibir
+                control={<Checkbox checked={materiasSelecionadas[materia] || false} onChange={handleCheckboxChange} name={materia} />}
                 label={materia.charAt(0).toUpperCase() + materia.slice(1)}
               />
             ))}
           </FormGroup>
         </FormControl>
-          
-        <FormControl component="fieldset" variant="standard" sx={{ my: 3, ml: 5 }}>
+        
+        <FormControl component="fieldset" variant="standard" sx={{ my: 3 }}>
           <FormLabel component="legend">Escolha a dificuldade</FormLabel>
-          <RadioGroup
-            row
-            value={dificuldade}
-            onChange={(e) => setDificuldade(e.target.value)}
-          >
+          <RadioGroup row value={dificuldade} onChange={(e) => setDificuldade(e.target.value)}>
             <FormControlLabel value="" control={<Radio />} label="Todas" />
             <FormControlLabel value="F" control={<Radio />} label="Fácil" />
             <FormControlLabel value="M" control={<Radio />} label="Médio" />
@@ -95,16 +81,7 @@ function CustomTestPage() {
         </FormControl>
 
         <Box sx={{ my: 3 }}>
-          <TextField
-            fullWidth
-            label="Número de Questões"
-            type="number"
-            value={numQuestoes}
-            onChange={(e) => setNumQuestoes(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <TextField fullWidth label="Número de Questões" type="number" value={numQuestoes} onChange={(e) => setNumQuestoes(e.target.value)} InputLabelProps={{ shrink: true }} />
         </Box>
 
         <Button type="submit" variant="contained" size="large">

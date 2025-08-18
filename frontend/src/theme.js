@@ -1,19 +1,17 @@
-// src/theme.js
-
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#4CAF50', // Um verde capim vibrante e agradável
+      main: '#4CAF50',
     },
     secondary: {
-      main: '#616161', // Um cinza escuro para textos e elementos secundários
+      main: '#616161',
     },
     background: {
-      default: '#f5f5f5', // Um cinza muito claro para o fundo geral
-      paper: '#ffffff',   // Branco para o fundo de cards, etc.
+      default: '#f5f5f5',
+      paper: '#ffffff',
     },
   },
   typography: {
@@ -30,7 +28,7 @@ const theme = createTheme({
         styleOverrides: {
             root: {
                 borderRadius: 8,
-                textTransform: 'none', // Impede que os botões fiquem em MAIÚSCULAS
+                textTransform: 'none',
                 fontWeight: 600,
             }
         }
