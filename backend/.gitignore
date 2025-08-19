@@ -9,7 +9,7 @@ __pycache__/
 db.sqlite3
 *.sqlite3
 
-# Arquivos de ambiente (para senhas no futuro)
+# Ignorar ficheiros de ambiente local
 .env
 
 # Arquivos de IDE

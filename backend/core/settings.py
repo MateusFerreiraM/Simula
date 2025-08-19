@@ -152,4 +152,18 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+# ADICIONE ESTE BLOCO DE CÓDIGO PARA DEPURAÇÃO
+# ==============================================================================
+print("--- INICIANDO VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE CLOUDINARY ---")
+print(f"NOME DA NUVEM (CLOUD_NAME): {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
+print(f"CHAVE DE API (API_KEY): {os.environ.get('CLOUDINARY_API_KEY')}")
+# Por segurança, não vamos imprimir a SECRET KEY, apenas confirmar se ela existe.
+if os.environ.get('CLOUDINARY_API_SECRET'):
+    print("CHAVE SECRETA (API_SECRET): [DEFINIDA]")
+else:
+    print("CHAVE SECRETA (API_SECRET): [NÃO ENCONTRADA!!!]")
+print("--- FIM DA VERIFICAÇÃO ---")
+# ==============================================================================
+
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
