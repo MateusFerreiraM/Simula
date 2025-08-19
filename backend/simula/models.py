@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.files.storage import get_storage_class
 
 # --- Constantes de Opções (Choices) ---
 
@@ -44,12 +43,7 @@ class Questao(models.Model):
     alternativa_d = models.CharField(max_length=255)
     alternativa_e = models.CharField(max_length=255)
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTA_CHOICES)
-    imagem = models.ImageField(
-        upload_to='questoes_imagens/',
-        null=True,
-        blank=True,
-        storage=get_storage_class("mediafiles")
-    )
+    imagem = models.ImageField(upload_to='questoes_imagens/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.get_materia_display()} - Questão #{self.id}"

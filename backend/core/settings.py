@@ -165,7 +165,6 @@ else:
 print("--- FIM DA VERIFICAÇÃO ---")
 # ==============================================================================
 
-
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -173,8 +172,11 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
-    # Adiciona uma configuração específica para ficheiros de média
+    # A configuração específica para ficheiros de média está correta
     "mediafiles": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 }
+
+# Diz ao Django para usar o atalho 'mediafiles' como o padrão para uploads
+DEFAULT_FILE_STORAGE = "mediafiles"
