@@ -20,7 +20,6 @@ class QuestaoSerializer(serializers.ModelSerializer):
             'alternativa_d',
             'alternativa_e',
             'resposta_correta',
-            'imagem',
         ]
 
 class RespostaSerializer(serializers.ModelSerializer):

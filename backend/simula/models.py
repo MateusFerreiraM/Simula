@@ -43,7 +43,10 @@ class Questao(models.Model):
     alternativa_d = models.CharField(max_length=255)
     alternativa_e = models.CharField(max_length=255)
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTA_CHOICES)
-    imagem = models.ImageField(upload_to='questoes_imagens/', null=True, blank=True)
+    
+    # --- ADICIONADO PARA CORRIGIR O NOME NO PLURAL ---
+    class Meta:
+        verbose_name_plural = "Questoes"
 
     def __str__(self):
         return f"{self.get_materia_display()} - Questão #{self.id}"

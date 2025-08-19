@@ -181,11 +181,6 @@ function SimuladoPage() {
           <CardContent>
             <Typography variant="h6" component="h2">Questão {indiceQuestaoAtual + 1} de {simulado.questoes.length}</Typography>
             <Typography sx={{ my: 2 }}>{questaoAtual.texto}</Typography>
-            {questaoAtual.imagem && (
-              <Box sx={{ my: 2, textAlign: 'center' }}>
-                <Box component="img" sx={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px' }} alt={`Imagem para a questão ${questaoAtual.id}`} src={questaoAtual.imagem}/>
-              </Box>
-            )}
             <FormControl component="fieldset" disabled={reviewMode}>
               <FormLabel component="legend">Alternativas</FormLabel>
               <RadioGroup value={reviewMode ? respostaDoUsuarioParaQuestaoAtual || '' : respostaSelecionada} onChange={(e) => setRespostaSelecionada(e.target.value)}>

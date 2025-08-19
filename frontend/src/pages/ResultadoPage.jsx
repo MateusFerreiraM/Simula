@@ -85,9 +85,6 @@ function ResultadoPage() {
                   primary={`${index + 1}. ${questao.texto}`}
                   secondary={
                     <React.Fragment>
-                      {questao.imagem && (
-                        <Box component="img" sx={{ maxWidth: '200px', maxHeight: '150px', borderRadius: '4px', mt: 1, }} alt={`Imagem para a questão ${questao.id}`} src={questao.imagem} />
-                      )}
                       <Typography component="span" variant="body2" color="text.secondary" display="block">
                         Matéria: {nomeMateria}
                       </Typography>

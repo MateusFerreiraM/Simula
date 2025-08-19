@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'djoser',
-    'cloudinary_storage',
-    'cloudinary',
+    # 'cloudinary_storage', <-- REMOVIDO (Não precisamos mais)
+    # 'cloudinary',         <-- REMOVIDO (Não precisamos mais)
 
     # Nossos apps
     'simula',
@@ -116,13 +116,12 @@ USE_TZ = True
 
 
 # ==============================================================================
-# ARQUIVOS ESTÁTICOS E DE MÍDIA
+# ARQUIVOS ESTÁTICOS
 # ==============================================================================
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL e MEDIA_ROOT foram removidos, pois não são mais necessários.
 
 
 # ==============================================================================
@@ -145,38 +144,3 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
-# ADICIONE ESTE BLOCO DE CÓDIGO PARA DEPURAÇÃO
-# ==============================================================================
-print("--- INICIANDO VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE CLOUDINARY ---")
-print(f"NOME DA NUVEM (CLOUD_NAME): {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
-print(f"CHAVE DE API (API_KEY): {os.environ.get('CLOUDINARY_API_KEY')}")
-# Por segurança, não vamos imprimir a SECRET KEY, apenas confirmar se ela existe.
-if os.environ.get('CLOUDINARY_API_SECRET'):
-    print("CHAVE SECRETA (API_SECRET): [DEFINIDA]")
-else:
-    print("CHAVE SECRETA (API_SECRET): [NÃO ENCONTRADA!!!]")
-print("--- FIM DA VERIFICAÇÃO ---")
-# ==============================================================================
-
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-    # A configuração específica para ficheiros de média está correta
-    "mediafiles": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-}
-
-# Diz ao Django para usar o atalho 'mediafiles' como o padrão para uploads
-DEFAULT_FILE_STORAGE = "mediafiles"
