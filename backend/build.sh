@@ -13,4 +13,4 @@ fi
 
 python manage.py collectstatic --no-input
 python manage.py migrate
-python manage.py loaddata dados_finais_com_admin.json
+python manage.py loaddata questoes_finais.json
