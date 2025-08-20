@@ -124,23 +124,10 @@ class GerarEnemAPIView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class SimuladoDetailAPIView(generics.RetrieveAPIView):
-    """
-    Endpoint para buscar os detalhes de um simulado específico.
-    A view agora é inteligente: se o simulado estiver finalizado, ela retorna
-    os dados completos com as respostas corretas. Se não, retorna a versão segura.
-    """
+    serializer_class = SimuladoSerializer
     permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         return Simulado.objects.filter(usuario=self.request.user)
-
-    def get_serializer_class(self):
-        simulado = self.get_object()
-        
-        if simulado.pontuacao_final is not None:
-            return SimuladoReviewSerializer
-        else:
-            return SimuladoSerializer
 
 class MeusSimuladosListView(generics.ListAPIView):
     serializer_class = SimuladoSerializer
