@@ -2,15 +2,14 @@ import random
 from rest_framework import generics, views, response, status
 from rest_framework.permissions import IsAuthenticated
 from .models import Questao, Simulado, Resposta
-from .serializers import QuestaoSerializer, SimuladoSerializer
+from .serializers import QuestaoPublicaSerializer, SimuladoSerializer
 
 class QuestaoListCreateAPIView(generics.ListCreateAPIView):
     """
-    Endpoint público para listar todas as questões disponíveis.
-    Não requer autenticação.
+    Endpoint público para listar todas as questões disponíveis (sem as respostas).
     """
     queryset = Questao.objects.all()
-    serializer_class = QuestaoSerializer
+    serializer_class = QuestaoPublicaSerializer
 
 class GerarSimuladoAPIView(views.APIView):
     """

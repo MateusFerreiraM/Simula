@@ -71,7 +71,7 @@
     "alternativa_c": "6",
     "alternativa_d": "7",
     "alternativa_e": "8",
-    "resposta_correta": "B"
+    "resposta_correta": "C"
   }
 },
 {
@@ -96,7 +96,7 @@
     "materia": "matematica",
     "dificuldade": "D",
     "texto": "Resolva: 2x² - 3x - 5 = 0",
-    "alternativa_a": "2, -5/2",
+    "alternativa_a": "-1, 5/2",
     "alternativa_b": "1, -5",
     "alternativa_c": "3, -5/3",
     "alternativa_d": "5, -2",
@@ -131,7 +131,7 @@
     "alternativa_c": "1800°",
     "alternativa_d": "1620°",
     "alternativa_e": "2160°",
-    "resposta_correta": "D"
+    "resposta_correta": "C"
   }
 },
 {
@@ -575,7 +575,7 @@
   "fields": {
     "materia": "fisica",
     "dificuldade": "F",
-    "texto": "Unidade da força no SI.",
+    "texto": "Unidade da força no Sistema Internacional de Unidades (SI):",
     "alternativa_a": "Pascal",
     "alternativa_b": "Watt",
     "alternativa_c": "Ampere",
@@ -596,7 +596,7 @@
     "alternativa_c": "6 m/s²",
     "alternativa_d": "3 m/s²",
     "alternativa_e": "4 m/s²",
-    "resposta_correta": "E"
+    "resposta_correta": "A"
   }
 },
 {
@@ -626,7 +626,7 @@
     "alternativa_c": "15 N",
     "alternativa_d": "20 N",
     "alternativa_e": "Nenhuma",
-    "resposta_correta": "A"
+    "resposta_correta": "D"
   }
 },
 {
@@ -641,7 +641,7 @@
     "alternativa_c": "50 m",
     "alternativa_d": "40 m",
     "alternativa_e": "30 m",
-    "resposta_correta": "D"
+    "resposta_correta": "A"
   }
 },
 {
