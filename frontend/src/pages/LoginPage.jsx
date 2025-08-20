@@ -4,9 +4,6 @@ import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 import Logo from '../components/Logo';
 
-/**
- * Página de login de usuários, agora com visual customizado.
- */
 function LoginPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -15,8 +12,6 @@ function LoginPage() {
   });
 
   useEffect(() => {
-    // Este código executa uma vez quando a página de login carrega.
-    // Ele garante que, ao chegar aqui, qualquer sessão anterior seja encerrada.
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
   }, []);

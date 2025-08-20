@@ -4,7 +4,6 @@ set -o errexit
 
 pip install -r requirements.txt
 
-# Bloco de Limpeza Condicional
 if [ "$RUN_FLUSH" = "True" ]; then
   echo "!!! VARIÁVEL RUN_FLUSH DETETADA - LIMPANDO O BANCO DE DADOS !!!"
   python manage.py flush --no-input

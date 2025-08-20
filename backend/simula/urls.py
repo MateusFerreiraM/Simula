@@ -10,11 +10,9 @@ from .views import (
 )
 
 urlpatterns = [
-    # Rotas de Autenticação
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
 
-    # Rotas do Simulado
     path('questoes/', QuestaoListCreateAPIView.as_view(), name='lista-questoes'),
     path('gerar-simulado/', GerarSimuladoAPIView.as_view(), name='gerar-simulado'),
     path('simulados/<int:pk>/', SimuladoDetailAPIView.as_view(), name='detalhe-simulado'),

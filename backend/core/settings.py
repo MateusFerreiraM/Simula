@@ -9,7 +9,6 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # ==============================================================================
 # CONFIGURAÇÕES DE SEGURANÇA
 # ==============================================================================
@@ -20,7 +19,6 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
 
 # ==============================================================================
 # APLICAÇÕES (APPS)
@@ -45,7 +43,6 @@ INSTALLED_APPS = [
     'simula',
 ]
 
-
 # ==============================================================================
 # MIDDLEWARE
 # ==============================================================================
@@ -61,14 +58,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # ==============================================================================
 # CONFIGURAÇÕES PRINCIPAIS DO DJANGO
 # ==============================================================================
 ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # ==============================================================================
 # BANCO DE DADOS
@@ -78,7 +73,6 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
 }
-
 
 # ==============================================================================
 # TEMPLATES E VALIDAÇÃO DE SENHA
@@ -105,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # ==============================================================================
 # INTERNACIONALIZAÇÃO (I18N)
 # ==============================================================================
@@ -114,15 +107,11 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-
 # ==============================================================================
 # ARQUIVOS ESTÁTICOS
 # ==============================================================================
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# MEDIA_URL e MEDIA_ROOT foram removidos, pois não são mais necessários.
-
 
 # ==============================================================================
 # CONFIGURAÇÕES DE APPS DE TERCEIROS (DRF, CORS, JWT)

@@ -2,7 +2,7 @@
 
 <img src="frontend/src/assets/logo-simula.png" alt="Logo do Simula" width="200"/>
 
-**Uma plataforma de estudos full-stack, inteligente e interativa, construída com Django e React.**
+**Uma plataforma de estudos full-stack, completa e interativa, construída com Django e React.**
 
 Este projeto é uma aplicação web completa projetada para ajudar estudantes a se prepararem para exames através de simulados personalizados e análises de desempenho detalhadas. A plataforma oferece dois modos de estudo, um dashboard completo com gráficos e um sistema de autenticação seguro.
 
@@ -10,26 +10,23 @@ Este projeto é uma aplicação web completa projetada para ajudar estudantes a 
 
 ## ✨ Principais Funcionalidades
 
-- **Autenticação de Usuários:** Sistema completo de cadastro e login com tokens JWT, garantindo que cada usuário tenha seu próprio histórico e dados seguros.
-- **Modo Simulado ENEM:** Gera uma prova com uma estrutura fixa de questões, simulando a experiência do exame real.
-- **Modo Teste Personalizado:** Permite ao usuário total controle sobre seu estudo, com filtros por matéria, dificuldade e número de questões.
-- **Dashboard de Desempenho:** Uma central de inteligência que exibe:
-    - Métricas gerais (percentual de acerto, total de questões).
-    - Gráfico de desempenho por matéria para identificar pontos fortes e fracos.
-    - Gráficos comparativos de performance entre os modos de prova (ENEM vs. Personalizado).
-- **Histórico de Provas:** Todos os simulados realizados ficam salvos, com suas respectivas pontuações e tempo de duração.
-- **Modo de Revisão:** Após finalizar um teste, o usuário pode revisar cada questão para ver sua resposta, a resposta correta e aprender com os erros.
-- **Suporte a Imagens:** As questões podem incluir imagens para um contexto visual mais rico.
-- **Cronômetro Integrado:** As provas têm um tempo limite, adicionando um desafio extra e simulando as condições reais de um exame.
+-   **Autenticação de Usuários:** Sistema completo de cadastro e login com tokens JWT, garantindo que cada usuário tenha seu próprio histórico e dados seguros.
+-   **Modo Simulado ENEM:** Gera uma prova com uma estrutura fixa de questões, simulando a experiência do exame real.
+-   **Modo Teste Personalizado:** Permite ao usuário total controle sobre seu estudo, com filtros por matéria, dificuldade e número de questões (total ou por matéria).
+-   **Dashboard de Desempenho:** Uma central de análise que exibe:
+    -   Métricas gerais (percentual de acerto, total de questões).
+    -   Gráfico de desempenho por matéria para identificar pontos fortes e fracos.
+-   **Histórico de Provas:** Todos os simulados realizados ficam salvos, com suas respectivas pontuações e tempo de duração.
+-   **Modo de Revisão:** Após finalizar um teste, o usuário pode revisar cada questão para ver sua resposta e a resposta correta, aprendendo com os erros.
+-   **Cronômetro Integrado:** As provas têm um tempo limite, adicionando um desafio extra e simulando as condições reais de um exame.
 
 ---
 
 ## 🚀 Acesso e Demonstração
 
-Você pode testar a aplicação completa nos links abaixo:
+Você pode testar a aplicação completa no link abaixo.
 
-- **Frontend (Vercel):** https://simula-six.vercel.app/
-- **Backend API (Render):** https://simula.onrender.com/api/questoes/
+-   **Frontend (Vercel):** https://simula-six.vercel.app/
 
 ---
 
@@ -38,24 +35,24 @@ Você pode testar a aplicação completa nos links abaixo:
 A aplicação foi construída utilizando uma arquitetura moderna, separando o back-end e o front-end.
 
 ### **Back-end (Servidor)**
-- **Linguagem:** Python 3
-- **Framework:** Django
-- **API:** Django REST Framework
-- **Banco de Dados:** PostgreSQL
-- **Autenticação:** Djoser & Simple JWT
-- **Servidor de Produção:** Gunicorn & WhiteNoise
+-   **Linguagem:** Python 3
+-   **Framework:** Django
+-   **API:** Django REST Framework
+-   **Banco de Dados:** PostgreSQL
+-   **Autenticação:** Djoser & Simple JWT
+-   **Servidor de Produção:** Gunicorn & WhiteNoise
 
 ### **Front-end (Interface)**
-- **Biblioteca:** React 18
-- **Build Tool:** Vite
-- **Roteamento:** React Router DOM
-- **UI/Componentes:** Material-UI (MUI)
-- **Gráficos:** Chart.js
-- **Cliente HTTP:** Axios
+-   **Biblioteca:** React 18
+-   **Build Tool:** Vite
+-   **Roteamento:** React Router DOM
+-   **UI/Componentes:** Material-UI (MUI)
+-   **Gráficos:** Chart.js
+-   **Cliente HTTP:** Axios
 
 ### **Deploy (Hospedagem)**
-- **Back-end:** Render
-- **Front-end:** Vercel
+-   **Back-end:** Render
+-   **Front-end:** Vercel
 
 ---
 
@@ -64,16 +61,16 @@ A aplicação foi construída utilizando uma arquitetura moderna, separando o ba
 Para executar este projeto na sua máquina, siga os passos abaixo.
 
 ### **Pré-requisitos**
-- [Git](https://git-scm.com/)
-- [Python](https://www.python.org/downloads/) (versão 3.8 ou superior)
-- [Node.js e npm](https://nodejs.org/en/) (versão LTS recomendada)
-- [PostgreSQL](https://www.postgresql.org/download/)
+-   [Git](https://git-scm.com/)
+-   [Python](https://www.python.org/downloads/) (versão 3.8 ou superior)
+-   [Node.js e npm](https://nodejs.org/en/) (versão LTS recomendada)
+-   [PostgreSQL](https://www.postgresql.org/download/)
 
 ### **Instalação**
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/MateusFerreiraM/Simula.git
+    git clone [https://github.com/MateusFerreiraM/Simula.git](https://github.com/MateusFerreiraM/Simula.git)
     cd Simula
     ```
 
@@ -92,8 +89,11 @@ Para executar este projeto na sua máquina, siga os passos abaixo.
     # Instale as dependências
     pip install -r requirements.txt
 
-    # Crie um arquivo .env na pasta 'backend' e configure suas variáveis
-    # de ambiente (SECRET_KEY, DEBUG=True, DATABASE_URL).
+    # Crie o seu ficheiro de ambiente local
+    # Crie um ficheiro chamado .env na pasta 'backend' e adicione as seguintes variáveis:
+    # SECRET_KEY=SUA_CHAVE_SECRETA_AQUI
+    # DEBUG=True
+    # DATABASE_URL=postgres://SEU_USER:SUA_SENHA@localhost:5432/SEU_DB
 
     # Aplique as migrações no seu banco de dados PostgreSQL local
     python manage.py migrate

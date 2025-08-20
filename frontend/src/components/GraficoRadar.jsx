@@ -2,12 +2,11 @@ import React from 'react';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 
-// Registra os plugins necessários do Chart.js para este tipo de gráfico.
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 /**
  * Renderiza um gráfico de radar para comparar desempenhos.
- * @param {{dadosDoGrafico: object, title: string}} props - Os dados e o título para o gráfico.
+ * @param {{dadosDoGrafico: object, title: string}} props
  */
 function GraficoRadar({ dadosDoGrafico, title }) {
   const options = {

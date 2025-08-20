@@ -3,11 +3,6 @@ import { AppBar, Toolbar, Button, Box, Container } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 
-/**
- * Componente de cabeçalho da aplicação.
- * Se o usuário não estiver logado, exibe apenas o logo centralizado.
- * Se estiver logado, exibe o logo e os botões de navegação.
- */
 function Header() {
   const navigate = useNavigate();
   const isUserLoggedIn = !!localStorage.getItem('access_token');

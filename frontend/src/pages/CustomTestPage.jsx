@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'; // 1. Adicionado "useCallback"
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio, Alert, AlertTitle } from '@mui/material';
@@ -7,10 +7,6 @@ const materiasDisponiveis = [
   'matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia'
 ];
 
-/**
- * Página onde o usuário personaliza seu simulado, escolhendo
- * matérias, dificuldade e número de questões.
- */
 function CustomTestPage() {
   const navigate = useNavigate();
   const [materiasSelecionadas, setMateriasSelecionadas] = useState({});
@@ -22,15 +18,12 @@ function CustomTestPage() {
     setMateriasSelecionadas({ ...materiasSelecionadas, [event.target.name]: event.target.checked });
   };
 
-  // 2. NOVA FUNÇÃO PARA VALIDAR A ENTRADA DE NÚMEROS
-  // Garante que apenas números inteiros positivos sejam aceites
   const handleNumQuestoesChange = useCallback((e) => {
     const value = e.target.value;
     if (value === '') {
       setNumQuestoes('');
     } else {
       const intValue = parseInt(value, 10);
-      // Garante que o valor é um número e não é negativo
       if (!isNaN(intValue) && intValue >= 0) {
         setNumQuestoes(intValue);
       }
@@ -110,7 +103,6 @@ function CustomTestPage() {
         </FormControl>
 
         <Box sx={{ my: 3 }}>
-          {/* 3. TEXTFIELD ATUALIZADO PARA USAR A NOVA LÓGICA */}
           <TextField
             fullWidth
             label="Número de Questões"

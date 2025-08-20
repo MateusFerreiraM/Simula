@@ -21,11 +21,9 @@ class GerarSimuladoAPIView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        # --- 1. Leitura dos dados do pedido ---
         materias = request.data.get('materias', [])
         num_questoes = request.data.get('num_questoes', 10)
         dificuldade = request.data.get('dificuldade', None)
-        # Lê o novo modo, com 'total' como valor padrão para segurança
         modo_numero_questoes = request.data.get('modo_numero_questoes', 'total')
 
         if not materias or not num_questoes or num_questoes <= 0:
@@ -36,31 +34,25 @@ class GerarSimuladoAPIView(views.APIView):
 
         questoes_selecionadas = []
         
-        # --- 2. Lógica para o modo "Questões por Matéria" ---
         if modo_numero_questoes == 'por_materia':
             for materia in materias:
-                # Filtra as questões para cada matéria individualmente
                 questoes_da_materia = Questao.objects.filter(materia=materia)
                 if dificuldade:
                     questoes_da_materia = questoes_da_materia.filter(dificuldade=dificuldade)
 
-                # Validação específica para este modo
                 if questoes_da_materia.count() < num_questoes:
                     return response.Response(
                         {"erro": f"Não há {num_questoes} questões de '{materia}' com os filtros selecionados."},
                         status=status.HTTP_400_BAD_REQUEST
                     )
                 
-                # Adiciona uma amostra aleatória de cada matéria à lista final
                 questoes_selecionadas.extend(random.sample(list(questoes_da_materia), num_questoes))
 
-        # --- 3. Lógica para o modo "Total de Questões" (com distribuição equilibrada) ---
-        else: # O modo padrão é 'total'
+        else:
             num_materias = len(materias)
             base_por_materia = num_questoes // num_materias
             extras = num_questoes % num_materias
 
-            # Filtro geral para uma verificação inicial
             questoes_disponiveis = Questao.objects.filter(materia__in=materias)
             if dificuldade:
                 questoes_disponiveis = questoes_disponiveis.filter(dificuldade=dificuldade)
@@ -73,7 +65,6 @@ class GerarSimuladoAPIView(views.APIView):
 
             ids_ja_usados = set()
 
-            # Seleciona a quantidade base para cada matéria
             if base_por_materia > 0:
                 for materia in materias:
                     questoes_da_materia = Questao.objects.filter(materia=materia)
@@ -91,13 +82,10 @@ class GerarSimuladoAPIView(views.APIView):
                     for q in selecao:
                         ids_ja_usados.add(q.id)
             
-            # Seleciona as questões extras (o resto da divisão) de forma aleatória
             if extras > 0:
-                # Busca questões restantes, excluindo as que já foram selecionadas
                 questoes_restantes = questoes_disponiveis.exclude(id__in=ids_ja_usados)
                 questoes_selecionadas.extend(random.sample(list(questoes_restantes), extras))
 
-        # --- 4. Criação do Simulado (comum a ambos os modos) ---
         if not questoes_selecionadas:
              return response.Response(
                 {"erro": "Não foi possível selecionar nenhuma questão com os critérios fornecidos."},
@@ -110,12 +98,9 @@ class GerarSimuladoAPIView(views.APIView):
         serializer = SimuladoSerializer(simulado)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# --- O RESTO DAS SUAS VIEWS CONTINUAM IGUAIS ---
-
 class GerarEnemAPIView(views.APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
-        # ... (código inalterado) ...
         questoes_por_materia = 2
         materias = ['matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia']
         questoes_selecionadas = []
@@ -154,7 +139,6 @@ class MeusSimuladosListView(generics.ListAPIView):
 class SalvarRespostaAPIView(views.APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
-        # ... (código inalterado) ...
         simulado_id = request.data.get('simulado_id')
         questao_id = request.data.get('questao_id')
         resposta_usuario = request.data.get('resposta_usuario')
@@ -175,7 +159,6 @@ class SalvarRespostaAPIView(views.APIView):
 class FinalizarSimuladoAPIView(views.APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
-        # ... (código inalterado) ...
         simulado_id = kwargs.get('pk')
         tempo_levado = request.data.get('tempo_levado')
         try:

@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # --- Constantes de Opções (Choices) ---
-
 MATERIA_CHOICES = [
     ('matematica', 'Matemática'),
     ('portugues', 'Português'),
@@ -29,7 +28,6 @@ RESPOSTA_CHOICES = [
 
 
 # --- Modelos da Aplicação ---
-
 class Questao(models.Model):
     """
     Representa uma única questão de múltipla escolha no banco de dados.
@@ -44,13 +42,11 @@ class Questao(models.Model):
     alternativa_e = models.CharField(max_length=255)
     resposta_correta = models.CharField(max_length=1, choices=RESPOSTA_CHOICES)
     
-    # --- ADICIONADO PARA CORRIGIR O NOME NO PLURAL ---
     class Meta:
         verbose_name_plural = "Questoes"
 
     def __str__(self):
         return f"{self.get_materia_display()} - Questão #{self.id}"
-
 
 class Simulado(models.Model):
     """
@@ -71,7 +67,6 @@ class Simulado(models.Model):
 
     def __str__(self):
         return f"Simulado #{self.id} de {self.usuario.username} ({self.get_tipo_display()})"
-
 
 class Resposta(models.Model):
     """

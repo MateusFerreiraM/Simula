@@ -17,9 +17,6 @@ const formatarDuracao = (segundos) => {
     return `${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
 }
 
-/**
- * Página que exibe os resultados detalhados de um simulado concluído.
- */
 function ResultadoPage() {
   const { simuladoId } = useParams();
   const [resultado, setResultado] = useState(null);
@@ -40,7 +37,6 @@ function ResultadoPage() {
       });
   }, [simuladoId]);
 
-  // Otimização: Cálculos são "memorizados" e só rodam novamente se 'resultado' mudar.
   const { acertos, totalQuestoes, tempoFormatado, mapaRespostas } = useMemo(() => {
     if (!resultado) {
       return { acertos: 0, totalQuestoes: 0, tempoFormatado: null, mapaRespostas: {} };

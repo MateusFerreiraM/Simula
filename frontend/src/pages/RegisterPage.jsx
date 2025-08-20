@@ -4,9 +4,6 @@ import apiClient from '../api/axiosInstance';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 import Logo from '../components/Logo';
 
-/**
- * Página de cadastro de novos usuários.
- */
 function RegisterPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

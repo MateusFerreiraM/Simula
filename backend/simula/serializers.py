@@ -8,7 +8,6 @@ class QuestaoSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Questao
-        # Listar os campos explicitamente é uma prática mais segura do que usar '__all__'
         fields = [
             'id',
             'materia',
@@ -27,7 +26,6 @@ class RespostaSerializer(serializers.ModelSerializer):
     Serializer para o modelo Resposta. Usado de forma aninhada no SimuladoSerializer
     para mostrar as respostas de um usuário em um determinado simulado.
     """
-    # ReadOnlyField para incluir o ID da questão relacionada, facilitando o mapeamento no front-end.
     questao_id = serializers.ReadOnlyField(source='questao.id')
 
     class Meta:
@@ -40,7 +38,6 @@ class SimuladoSerializer(serializers.ModelSerializer):
     questões e das respostas associadas para fornecer uma visão completa do simulado.
     """
     questoes = QuestaoSerializer(many=True, read_only=True)
-    # 'resposta_set' é o gerenciador reverso para buscar todas as respostas de um simulado.
     respostas = RespostaSerializer(many=True, read_only=True, source='resposta_set')
 
     class Meta:

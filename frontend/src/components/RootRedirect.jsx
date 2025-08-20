@@ -1,12 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-/**
- * Componente "porteiro". Não renderiza nada visual, sua única função é
- * redirecionar o usuário para a rota correta com base no seu estado de login.
- * - Se logado -> /home
- * - Se deslogado -> /login
- */
 function RootRedirect() {
   const navigate = useNavigate();
 
