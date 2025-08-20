@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react'; // 1. Adicionado "useCallback"
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
-import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
+import { Container, Typography, Box, FormGroup, FormControlLabel, Checkbox, TextField, Button, FormControl, FormLabel, RadioGroup, Radio, Alert, AlertTitle } from '@mui/material';
 
-// TODO: No futuro, esta lista pode ser buscada da API para ser mais dinâmica.
 const materiasDisponiveis = [
   'matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia'
 ];
@@ -17,10 +16,26 @@ function CustomTestPage() {
   const [materiasSelecionadas, setMateriasSelecionadas] = useState({});
   const [numQuestoes, setNumQuestoes] = useState(10);
   const [dificuldade, setDificuldade] = useState("");
+  const [modoNumeroQuestoes, setModoNumeroQuestoes] = useState('total');
 
   const handleCheckboxChange = (event) => {
     setMateriasSelecionadas({ ...materiasSelecionadas, [event.target.name]: event.target.checked });
   };
+
+  // 2. NOVA FUNÇÃO PARA VALIDAR A ENTRADA DE NÚMEROS
+  // Garante que apenas números inteiros positivos sejam aceites
+  const handleNumQuestoesChange = useCallback((e) => {
+    const value = e.target.value;
+    if (value === '') {
+      setNumQuestoes('');
+    } else {
+      const intValue = parseInt(value, 10);
+      // Garante que o valor é um número e não é negativo
+      if (!isNaN(intValue) && intValue >= 0) {
+        setNumQuestoes(intValue);
+      }
+    }
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,6 +49,7 @@ function CustomTestPage() {
     const configData = {
       materias: selecionadas,
       num_questoes: parseInt(numQuestoes, 10),
+      modo_numero_questoes: modoNumeroQuestoes,
     };
 
     if (dificuldade) {
@@ -57,7 +73,12 @@ function CustomTestPage() {
           Personalize seu Teste
         </Typography>
 
-        <FormControl component="fieldset" variant="standard" sx={{ my: 3 }}>
+        <Alert severity="info" sx={{ mt: 2, mb: 3 }}>
+          <AlertTitle>Informação Importante</AlertTitle>
+          Para esta versão de demonstração, o nosso banco de dados contém <strong>3 questões</strong> para cada combinação de matéria e dificuldade.
+        </Alert>
+
+        <FormControl component="fieldset" variant="standard" sx={{ my: 3, width: '100%' }}>
           <FormLabel component="legend">Escolha as matérias</FormLabel>
           <FormGroup row>
             {materiasDisponiveis.map((materia) => (
@@ -70,7 +91,7 @@ function CustomTestPage() {
           </FormGroup>
         </FormControl>
         
-        <FormControl component="fieldset" variant="standard" sx={{ my: 3 }}>
+        <FormControl component="fieldset" variant="standard" sx={{ my: 3, width: '100%' }}>
           <FormLabel component="legend">Escolha a dificuldade</FormLabel>
           <RadioGroup row value={dificuldade} onChange={(e) => setDificuldade(e.target.value)}>
             <FormControlLabel value="" control={<Radio />} label="Todas" />
@@ -80,8 +101,25 @@ function CustomTestPage() {
           </RadioGroup>
         </FormControl>
 
+        <FormControl component="fieldset" variant="standard" sx={{ my: 3, width: '100%' }}>
+          <FormLabel component="legend">O número de questões refere-se ao...</FormLabel>
+          <RadioGroup row value={modoNumeroQuestoes} onChange={(e) => setModoNumeroQuestoes(e.target.value)}>
+            <FormControlLabel value="total" control={<Radio />} label="Número Total de Questões" />
+            <FormControlLabel value="por_materia" control={<Radio />} label="Número de Questões por Matéria" />
+          </RadioGroup>
+        </FormControl>
+
         <Box sx={{ my: 3 }}>
-          <TextField fullWidth label="Número de Questões" type="number" value={numQuestoes} onChange={(e) => setNumQuestoes(e.target.value)} InputLabelProps={{ shrink: true }} />
+          {/* 3. TEXTFIELD ATUALIZADO PARA USAR A NOVA LÓGICA */}
+          <TextField
+            fullWidth
+            label="Número de Questões"
+            type="number"
+            value={numQuestoes}
+            onChange={handleNumQuestoesChange}
+            InputProps={{ inputProps: { min: 1, step: 1 } }}
+            InputLabelProps={{ shrink: true }}
+          />
         </Box>
 
         <Button type="submit" variant="contained" size="large">

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link as RouterLink, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, Link as RouterLink, useLocation, useBlocker } from 'react-router-dom';
 import apiClient from '../api/axiosInstance';
-import { Container, Typography, Box, CircularProgress, Card, CardContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Chip } from '@mui/material';
+import { 
+    Container, Typography, Box, CircularProgress, Card, CardContent, Radio, 
+    RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Chip,
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle 
+} from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-/**
- * Formata um número total de segundos para o formato de string MM:SS.
- */
 const formatarTempo = (segundos) => {
     if (segundos === null || segundos < 0) return "00:00";
     const minutos = Math.floor(segundos / 60);
@@ -15,20 +16,12 @@ const formatarTempo = (segundos) => {
     return `${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
 };
 
-/**
- * Página principal do simulado, opera em dois modos:
- * 1. Modo Teste: O usuário responde às questões contra o tempo.
- * 2. Modo Revisão: O usuário revisa uma prova já concluída, vendo suas respostas e as corretas.
- */
 function SimuladoPage() {
   const { simuladoId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Determina o modo de operação (Teste ou Revisão) a partir do state da rota.
   const reviewMode = location.state?.reviewMode || false;
 
-  // Estados do componente
   const [simulado, setSimulado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [indiceQuestaoAtual, setIndiceQuestaoAtual] = useState(0);
@@ -36,21 +29,24 @@ function SimuladoPage() {
   const [tempoRestante, setTempoRestante] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [mapaRespostas, setMapaRespostas] = useState({});
+  const [simuladoFinalizado, setSimuladoFinalizado] = useState(false);
 
-  // Efeito para buscar os dados do simulado da API.
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      !reviewMode && !simuladoFinalizado && currentLocation.pathname !== nextLocation.pathname
+  );
+
   useEffect(() => {
     apiClient.get(`/simulados/${simuladoId}/`)
       .then(response => {
         const simuladoData = response.data;
         setSimulado(simuladoData);
-
         if (!reviewMode) {
-          const tempoTotalEmSegundos = simuladoData.questoes.length * 180; // 3 min por questão
+          const tempoTotalEmSegundos = simuladoData.questoes.length * 180;
           setTempoRestante(tempoTotalEmSegundos);
           setEndTime(Date.now() + tempoTotalEmSegundos * 1000);
           localStorage.setItem('simulado_start_time', Date.now());
         }
-
         const respostasMap = simuladoData.respostas.reduce((map, resp) => {
             map[resp.questao_id] = resp.resposta_usuario;
             return map;
@@ -64,14 +60,24 @@ function SimuladoPage() {
       });
   }, [simuladoId, reviewMode]);
 
-  // Efeito que controla o cronômetro.
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (!reviewMode && !simuladoFinalizado) {
+        event.preventDefault();
+        event.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [reviewMode, simuladoFinalizado]);
+
   useEffect(() => {
     if (reviewMode || !endTime) return;
-
     const timerId = setInterval(() => {
       const segundosRestantes = Math.round((endTime - Date.now()) / 1000);
       setTempoRestante(segundosRestantes);
-
       if (segundosRestantes <= 0) {
         clearInterval(timerId);
         alert('O tempo acabou!');
@@ -81,14 +87,10 @@ function SimuladoPage() {
     return () => clearInterval(timerId);
   }, [endTime, reviewMode, navigate, simuladoId]);
 
-  /**
-   * Chamado quando o simulado termina, seja pelo tempo ou pelo usuário.
-   * Calcula a duração e envia para o backend antes de navegar para a página de resultados.
-   */
   const finalizarSimulado = () => {
+    setSimuladoFinalizado(true);
     const startTimeFromStorage = localStorage.getItem('simulado_start_time');
     const duracaoEmSegundos = Math.round((Date.now() - startTimeFromStorage) / 1000);
-
     apiClient.post(`/simulados/${simuladoId}/finalizar/`, { tempo_levado: duracaoEmSegundos })
         .then(() => navigate(`/resultado/${simuladoId}`))
         .catch(error => {
@@ -97,9 +99,6 @@ function SimuladoPage() {
         });
   };
 
-  /**
-   * Lida com o envio da resposta do usuário e avança para a próxima questão ou finaliza o simulado.
-   */
   const handleProximaQuestao = () => {
     if (!respostaSelecionada) {
       alert('Por favor, selecione uma alternativa.');
@@ -111,7 +110,6 @@ function SimuladoPage() {
       questao_id: questaoAtual.id,
       resposta_usuario: respostaSelecionada,
     };
-    
     apiClient.post('/salvar-resposta/', dadosResposta)
       .then(() => {
         if (indiceQuestaoAtual < simulado.questoes.length - 1) {
@@ -127,9 +125,6 @@ function SimuladoPage() {
       });
   };
 
-  /**
-   * Controla a navegação para frente e para trás no modo de revisão.
-   */
   const handleNavegacaoRevisao = (direcao) => {
       const novoIndice = indiceQuestaoAtual + direcao;
       if (novoIndice >= 0 && novoIndice < simulado.questoes.length) {
@@ -137,39 +132,41 @@ function SimuladoPage() {
       }
   };
 
-  // --- Renderização do Componente ---
-
-  if (loading) {
-    return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
-  }
-
-  if (!simulado) {
-    return <Typography sx={{ textAlign: 'center', mt: 4 }}>Simulado não encontrado.</Typography>;
-  }
-
+  if (loading) return <CircularProgress sx={{ display: 'block', margin: 'auto', mt: 4 }} />;
+  if (!simulado) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Simulado não encontrado.</Typography>;
   if (!reviewMode && simulado.questoes.length === 0) {
     return (
       <Container sx={{ my: 4, textAlign: 'center' }}>
         <Typography variant="h5">Erro ao Carregar Simulado</Typography>
-        <Typography sx={{ my: 2 }}>
-          Este simulado não contém nenhuma questão.
-        </Typography>
-        <Button component={RouterLink} to="/home" variant="contained">
-          Voltar para o Início
-        </Button>
+        <Typography sx={{ my: 2 }}>Este simulado não contém nenhuma questão.</Typography>
+        <Button component={RouterLink} to="/home" variant="contained">Voltar para o Início</Button>
       </Container>
     );
   }
-  
   const questaoAtual = simulado.questoes[indiceQuestaoAtual];
-  if (!questaoAtual) {
-    return <Typography sx={{ textAlign: 'center', mt: 4 }}>Erro: Não foi possível carregar a questão atual.</Typography>;
-  }
+  if (!questaoAtual) return <Typography sx={{ textAlign: 'center', mt: 4 }}>Erro: Não foi possível carregar a questão atual.</Typography>;
   const isUltimaQuestao = indiceQuestaoAtual === simulado.questoes.length - 1;
   const respostaDoUsuarioParaQuestaoAtual = mapaRespostas[questaoAtual.id];
 
   return (
     <Container maxWidth="md">
+      {blocker && blocker.state === "blocked" && (
+        <Dialog open={true} onClose={() => blocker.reset?.()}>
+          <DialogTitle>Tem a certeza que quer sair?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Se você sair agora, todo o seu progresso neste simulado será perdido.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => blocker.reset?.()}>Ficar na Página</Button>
+            <Button onClick={() => blocker.proceed?.()} color="error">
+              Sair Mesmo Assim
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
       <Box sx={{ my: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h4">
@@ -200,11 +197,7 @@ function SimuladoPage() {
                             key={altKey}
                             value={altValue}
                             control={<Radio />}
-                            label={
-                                <Typography component="span" sx={labelStyle}>
-                                    {`${altValue}) ${questaoAtual[altKey]}`}
-                                </Typography>
-                            }
+                            label={<Typography component="span" sx={labelStyle}>{`${altValue}) ${questaoAtual[altKey]}`}</Typography>}
                         />
                     );
                 })}

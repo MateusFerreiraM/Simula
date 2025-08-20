@@ -4,13 +4,14 @@ import logoImage from '../assets/logo-simula.png';
 
 /**
  * Componente que renderiza o logo da aplicação.
+ * Aceita uma propriedade 'height' para customizar o tamanho.
  */
-function Logo() {
+function Logo({ height = 60 }) {
   return (
     <Box 
       component="img"
       sx={{
-        height: 60, // Altura ajustável do logo
+        height: height,
         width: 'auto',
       }}
       alt="Logo do Simula"

@@ -15,46 +15,107 @@ class QuestaoListCreateAPIView(generics.ListCreateAPIView):
 class GerarSimuladoAPIView(views.APIView):
     """
     Endpoint para criar um novo Simulado Personalizado para o usuário autenticado.
-    Recebe uma lista de matérias, número de questões e dificuldade opcional.
+    Recebe uma lista de matérias, número de questões, dificuldade opcional e
+    o novo 'modo_numero_questoes' para determinar a lógica de seleção.
     """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
+        # --- 1. Leitura dos dados do pedido ---
         materias = request.data.get('materias', [])
         num_questoes = request.data.get('num_questoes', 10)
         dificuldade = request.data.get('dificuldade', None)
+        # Lê o novo modo, com 'total' como valor padrão para segurança
+        modo_numero_questoes = request.data.get('modo_numero_questoes', 'total')
 
-        if not materias or not num_questoes:
+        if not materias or not num_questoes or num_questoes <= 0:
             return response.Response(
-                {"erro": "Matérias e número de questões são obrigatórios."},
+                {"erro": "Matérias e um número de questões válido são obrigatórios."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        questoes_disponiveis = Questao.objects.filter(materia__in=materias)
-        if dificuldade:
-            questoes_disponiveis = questoes_disponiveis.filter(dificuldade=dificuldade)
+        questoes_selecionadas = []
+        
+        # --- 2. Lógica para o modo "Questões por Matéria" ---
+        if modo_numero_questoes == 'por_materia':
+            for materia in materias:
+                # Filtra as questões para cada matéria individualmente
+                questoes_da_materia = Questao.objects.filter(materia=materia)
+                if dificuldade:
+                    questoes_da_materia = questoes_da_materia.filter(dificuldade=dificuldade)
 
-        if questoes_disponiveis.count() < num_questoes:
-            return response.Response(
-                {"erro": "Não há questões suficientes para os filtros selecionados."},
+                # Validação específica para este modo
+                if questoes_da_materia.count() < num_questoes:
+                    return response.Response(
+                        {"erro": f"Não há {num_questoes} questões de '{materia}' com os filtros selecionados."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                
+                # Adiciona uma amostra aleatória de cada matéria à lista final
+                questoes_selecionadas.extend(random.sample(list(questoes_da_materia), num_questoes))
+
+        # --- 3. Lógica para o modo "Total de Questões" (com distribuição equilibrada) ---
+        else: # O modo padrão é 'total'
+            num_materias = len(materias)
+            base_por_materia = num_questoes // num_materias
+            extras = num_questoes % num_materias
+
+            # Filtro geral para uma verificação inicial
+            questoes_disponiveis = Questao.objects.filter(materia__in=materias)
+            if dificuldade:
+                questoes_disponiveis = questoes_disponiveis.filter(dificuldade=dificuldade)
+            
+            if questoes_disponiveis.count() < num_questoes:
+                return response.Response(
+                    {"erro": "Não há questões suficientes no total para os filtros selecionados."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            ids_ja_usados = set()
+
+            # Seleciona a quantidade base para cada matéria
+            if base_por_materia > 0:
+                for materia in materias:
+                    questoes_da_materia = Questao.objects.filter(materia=materia)
+                    if dificuldade:
+                        questoes_da_materia = questoes_da_materia.filter(dificuldade=dificuldade)
+                    
+                    if questoes_da_materia.count() < base_por_materia:
+                         return response.Response(
+                            {"erro": f"Não há questões suficientes de '{materia}' para uma distribuição equilibrada."},
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
+                    
+                    selecao = random.sample(list(questoes_da_materia), base_por_materia)
+                    questoes_selecionadas.extend(selecao)
+                    for q in selecao:
+                        ids_ja_usados.add(q.id)
+            
+            # Seleciona as questões extras (o resto da divisão) de forma aleatória
+            if extras > 0:
+                # Busca questões restantes, excluindo as que já foram selecionadas
+                questoes_restantes = questoes_disponiveis.exclude(id__in=ids_ja_usados)
+                questoes_selecionadas.extend(random.sample(list(questoes_restantes), extras))
+
+        # --- 4. Criação do Simulado (comum a ambos os modos) ---
+        if not questoes_selecionadas:
+             return response.Response(
+                {"erro": "Não foi possível selecionar nenhuma questão com os critérios fornecidos."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        questoes_selecionadas = random.sample(list(questoes_disponiveis), num_questoes)
         simulado = Simulado.objects.create(usuario=request.user, tipo='PERSONALIZADO')
         simulado.questoes.set(questoes_selecionadas)
 
         serializer = SimuladoSerializer(simulado)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class GerarEnemAPIView(views.APIView):
-    """
-    Endpoint para criar um novo Simulado estilo ENEM para o usuário autenticado.
-    Usa regras pré-definidas para selecionar as questões.
-    """
-    permission_classes = [IsAuthenticated]
+# --- O RESTO DAS SUAS VIEWS CONTINUAM IGUAIS ---
 
+class GerarEnemAPIView(views.APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
+        # ... (código inalterado) ...
         questoes_por_materia = 2
         materias = ['matematica', 'portugues', 'historia', 'geografia', 'fisica', 'quimica', 'biologia']
         questoes_selecionadas = []
@@ -79,45 +140,29 @@ class GerarEnemAPIView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class SimuladoDetailAPIView(generics.RetrieveAPIView):
-    """
-    Endpoint para buscar os detalhes de um simulado específico.
-    Apenas o usuário dono do simulado pode acessá-lo.
-    """
     serializer_class = SimuladoSerializer
     permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
-        # Garante que um usuário só possa ver os próprios simulados
         return Simulado.objects.filter(usuario=self.request.user)
 
 class MeusSimuladosListView(generics.ListAPIView):
-    """
-    Endpoint para listar todos os simulados completados pelo usuário autenticado.
-    """
     serializer_class = SimuladoSerializer
     permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         return Simulado.objects.filter(usuario=self.request.user).order_by('-data_criacao')
 
 class SalvarRespostaAPIView(views.APIView):
-    """
-    Endpoint para salvar a resposta de um usuário para uma questão de um simulado.
-    """
     permission_classes = [IsAuthenticated]
-
     def post(self, request, *args, **kwargs):
+        # ... (código inalterado) ...
         simulado_id = request.data.get('simulado_id')
         questao_id = request.data.get('questao_id')
         resposta_usuario = request.data.get('resposta_usuario')
 
         try:
-            # Garante que o usuário só possa modificar seu próprio simulado
             simulado = Simulado.objects.get(id=simulado_id, usuario=request.user)
             questao = Questao.objects.get(id=questao_id)
-
             esta_correta = (questao.resposta_correta == resposta_usuario)
-
             Resposta.objects.update_or_create(
                 simulado=simulado,
                 questao=questao,
@@ -128,16 +173,11 @@ class SalvarRespostaAPIView(views.APIView):
             return response.Response({"erro": "Simulado ou questão não encontrados."}, status=status.HTTP_404_NOT_FOUND)
 
 class FinalizarSimuladoAPIView(views.APIView):
-    """
-    Endpoint para marcar um simulado como finalizado, salvando o tempo
-    gasto e a pontuação final.
-    """
     permission_classes = [IsAuthenticated]
-
     def post(self, request, *args, **kwargs):
+        # ... (código inalterado) ...
         simulado_id = kwargs.get('pk')
         tempo_levado = request.data.get('tempo_levado')
-
         try:
             simulado = Simulado.objects.get(id=simulado_id, usuario=request.user)
             respostas_corretas = Resposta.objects.filter(simulado=simulado, correta=True).count()
@@ -145,7 +185,6 @@ class FinalizarSimuladoAPIView(views.APIView):
             simulado.tempo_levado = tempo_levado
             simulado.pontuacao_final = respostas_corretas
             simulado.save()
-
             serializer = SimuladoSerializer(simulado)
             return response.Response(serializer.data, status=status.HTTP_200_OK)
         except Simulado.DoesNotExist:

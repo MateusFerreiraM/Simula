@@ -1,0 +1,947 @@
+[
+{
+  "model": "simula.questao",
+  "pk": 4,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "F",
+    "texto": "Quanto é 7×8 ?",
+    "alternativa_a": "42",
+    "alternativa_b": "23",
+    "alternativa_c": "56",
+    "alternativa_d": "75",
+    "alternativa_e": "24",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 5,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "F",
+    "texto": "Resolva: 12 + 35 - 18",
+    "alternativa_a": "23",
+    "alternativa_b": "29",
+    "alternativa_c": "25",
+    "alternativa_d": "33",
+    "alternativa_e": "26",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 6,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "F",
+    "texto": "Qual é o valor de x em x + 5 = 12?",
+    "alternativa_a": "6",
+    "alternativa_b": "7",
+    "alternativa_c": "8",
+    "alternativa_d": "9",
+    "alternativa_e": "10",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 7,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "M",
+    "texto": "Calcule a área de um retângulo de base 12 cm e altura 8 cm.",
+    "alternativa_a": "80 cm²",
+    "alternativa_b": "144 cm²",
+    "alternativa_c": "100 cm²",
+    "alternativa_d": "120 cm²",
+    "alternativa_e": "96 cm²",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 8,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "M",
+    "texto": "Resolva: 2x + 3 = 15",
+    "alternativa_a": "4",
+    "alternativa_b": "5",
+    "alternativa_c": "6",
+    "alternativa_d": "7",
+    "alternativa_e": "8",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 9,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "M",
+    "texto": "Qual é a porcentagem de 30 em relação a 200?",
+    "alternativa_a": "10%",
+    "alternativa_b": "12%",
+    "alternativa_c": "15%",
+    "alternativa_d": "18%",
+    "alternativa_e": "20%",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 10,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "D",
+    "texto": "Resolva: 2x² - 3x - 5 = 0",
+    "alternativa_a": "2, -5/2",
+    "alternativa_b": "1, -5",
+    "alternativa_c": "3, -5/3",
+    "alternativa_d": "5, -2",
+    "alternativa_e": "0, -5/2",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 11,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "D",
+    "texto": "Uma loja deu 20% de desconto em um produto que custava R$ 250. Qual o valor final?",
+    "alternativa_a": "R$ 180",
+    "alternativa_b": "R$ 190",
+    "alternativa_c": "R$ 200",
+    "alternativa_d": "R$ 210",
+    "alternativa_e": "R$ 220",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 12,
+  "fields": {
+    "materia": "matematica",
+    "dificuldade": "D",
+    "texto": "Determine a soma dos ângulos internos de um polígono de 12 lados.",
+    "alternativa_a": "1980°",
+    "alternativa_b": "1440°",
+    "alternativa_c": "1800°",
+    "alternativa_d": "1620°",
+    "alternativa_e": "2160°",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 13,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "F",
+    "texto": "Classe gramatical de “rápido” em “O carro é rápido”.",
+    "alternativa_a": "Substantivo",
+    "alternativa_b": "Verbo",
+    "alternativa_c": "Adjetivo",
+    "alternativa_d": "Advérbio",
+    "alternativa_e": "Pronome",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 14,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "F",
+    "texto": "Sujeito de: “Os alunos estudaram para a prova.”",
+    "alternativa_a": "Os alunos",
+    "alternativa_b": "A prova",
+    "alternativa_c": "Estudaram",
+    "alternativa_d": "Nenhum sujeito",
+    "alternativa_e": "Sujeito oculto",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 15,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "F",
+    "texto": "Reescreva no futuro: “Eu estudo amanhã.”",
+    "alternativa_a": "Eu estudarei amanhã",
+    "alternativa_b": "Eu estudava amanhã",
+    "alternativa_c": "Eu estudara amanhã",
+    "alternativa_d": "Eu estudei amanhã",
+    "alternativa_e": "Eu estudo amanhã",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 16,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "M",
+    "texto": "4. Diferença entre oração subordinada adjetiva restritiva e explicativa.",
+    "alternativa_a": "Não há diferença",
+    "alternativa_b": "Restritiva limita o sentido, explicativa adiciona informação",
+    "alternativa_c": "Ambas são iguais a coordenadas",
+    "alternativa_d": "Restritiva vem sempre com vírgula",
+    "alternativa_e": "Explicativa nunca usa pronome relativo",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 17,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "M",
+    "texto": "Voz passiva de: “Os alunos resolveram a questão.”",
+    "alternativa_a": "A questão foi resolvida pelos alunos",
+    "alternativa_b": "Os alunos são resolvidos pela questão",
+    "alternativa_c": "A questão resolveram os alunos",
+    "alternativa_d": "Resolveram-se os alunos pela questão",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 18,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "M",
+    "texto": "Figura de linguagem em: “O vento cantava entre as árvores.”",
+    "alternativa_a": "Metáfora",
+    "alternativa_b": "Prosopopeia",
+    "alternativa_c": "Ironia",
+    "alternativa_d": "Eufemismo",
+    "alternativa_e": "Comparação",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 19,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "D",
+    "texto": "7. Análise da frase: “O livro que comprei ontem é interessante.”",
+    "alternativa_a": "“Que comprei ontem” = oração substantiva",
+    "alternativa_b": "“Que comprei ontem” = oração principal",
+    "alternativa_c": "“Que comprei ontem” = oração coordenada",
+    "alternativa_d": "“Que comprei ontem” = oração subordinada adjetiva restritiva",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 20,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "D",
+    "texto": "Diferença de uso entre “por que”, “porque”, “porquê”, “por quê”.",
+    "alternativa_a": "Todos significam a mesma coisa",
+    "alternativa_b": "Não existe “por quê”",
+    "alternativa_c": "Cada um tem uso específico",
+    "alternativa_d": "Só “porque” está correto",
+    "alternativa_e": "“Porquê” só no meio da frase",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 21,
+  "fields": {
+    "materia": "portugues",
+    "dificuldade": "D",
+    "texto": "Reescreva mantendo o sentido: “Ele não foi ao cinema, mas estudou bastante.”",
+    "alternativa_a": "Ele não foi ao cinema, logo estudou bastante",
+    "alternativa_b": "Ele não foi ao cinema, então estudou bastante",
+    "alternativa_c": "Ele não foi ao cinema, pois estudou bastante",
+    "alternativa_d": "Ele não foi ao cinema, ou estudou bastante",
+    "alternativa_e": "Ele não foi ao cinema, porém estudou bastante",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 22,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "F",
+    "texto": "Ano da Proclamação da República no Brasil.",
+    "alternativa_a": "1888",
+    "alternativa_b": "1889",
+    "alternativa_c": "1890",
+    "alternativa_d": "1891",
+    "alternativa_e": "1900",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 23,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "F",
+    "texto": "Primeiro presidente do Brasil.",
+    "alternativa_a": "Floriano Peixoto",
+    "alternativa_b": "Getúlio Vargas",
+    "alternativa_c": "Marechal Rondon",
+    "alternativa_d": "Deodoro da Fonseca",
+    "alternativa_e": "Dom Pedro II",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 24,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "F",
+    "texto": "O que foi a Independência do Brasil?",
+    "alternativa_a": "Início da República",
+    "alternativa_b": "Fim da escravidão",
+    "alternativa_c": "Criação da Constituição",
+    "alternativa_d": "Guerra do Paraguai",
+    "alternativa_e": "Rompimento com Portugal",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 25,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "M",
+    "texto": "Duas causas da Revolução Industrial.",
+    "alternativa_a": "Expansão marítima e feudalismo",
+    "alternativa_b": "Escravidão e absolutismo",
+    "alternativa_c": "Inovações tecnológicas e crescimento urbano",
+    "alternativa_d": "Guerras napoleônicas",
+    "alternativa_e": "Criação da ONU",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 26,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "M",
+    "texto": "Quem foi Tiradentes?",
+    "alternativa_a": "Presidente da República",
+    "alternativa_b": "Escritor modernista",
+    "alternativa_c": "Militar da ditadura",
+    "alternativa_d": "Líder da Inconfidência Mineira",
+    "alternativa_e": "Rei de Portugal",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 27,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "M",
+    "texto": "O que foi a Guerra Fria?",
+    "alternativa_a": "Guerra Civil americana",
+    "alternativa_b": "Conflito ideológico entre EUA e URSS",
+    "alternativa_c": "Conflito na África",
+    "alternativa_d": "Guerra Mundial",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 28,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "D",
+    "texto": "Diferença entre absolutismo e iluminismo.",
+    "alternativa_a": "Iluminismo é religioso",
+    "alternativa_b": "Absolutismo = igualdade social",
+    "alternativa_c": "Absolutismo = poder concentrado no rei; Iluminismo = razão e liberdade",
+    "alternativa_d": "Ambos defendem reis absolutos",
+    "alternativa_e": "Não há diferença",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 29,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "D",
+    "texto": "Consequências da escravidão após 1888.",
+    "alternativa_a": "Ascensão imediata dos negros",
+    "alternativa_b": "Fim do preconceito",
+    "alternativa_c": "Desenvolvimento igualitário",
+    "alternativa_d": "Desigualdade social e racismo estrutural",
+    "alternativa_e": "Igualdade plena",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 30,
+  "fields": {
+    "materia": "historia",
+    "dificuldade": "D",
+    "texto": "Papel do Brasil na 2ª Guerra Mundial.",
+    "alternativa_a": "Criou a OTAN",
+    "alternativa_b": "Liderou a ONU",
+    "alternativa_c": "Não participou",
+    "alternativa_d": "Declarou guerra a Portugal",
+    "alternativa_e": "Enviou a Força Expedicionária Brasileira para a Itália",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 31,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "F",
+    "texto": "Maior país em extensão territorial.",
+    "alternativa_a": "EUA",
+    "alternativa_b": "Brasil",
+    "alternativa_c": "Canadá",
+    "alternativa_d": "China",
+    "alternativa_e": "Rússia",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 32,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "F",
+    "texto": "Rio mais extenso do Brasil.",
+    "alternativa_a": "Tocantins",
+    "alternativa_b": "Madeira",
+    "alternativa_c": "Paraná",
+    "alternativa_d": "São Francisco",
+    "alternativa_e": "Amazonas",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 33,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "F",
+    "texto": "O que é latitude?",
+    "alternativa_a": "Altura do relevo",
+    "alternativa_b": "Diferença de fusos horários",
+    "alternativa_c": "Altitude",
+    "alternativa_d": "Distância em graus a leste ou oeste do meridiano",
+    "alternativa_e": "Distância em graus ao norte ou sul da linha do Equador",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 34,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "M",
+    "texto": "Diferença entre clima e tempo.",
+    "alternativa_a": "Clima = longo prazo, Tempo = momento atual",
+    "alternativa_b": "Clima = dias, Tempo = anos",
+    "alternativa_c": "Clima só existe no inverno",
+    "alternativa_d": "Ambos iguais",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 35,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "M",
+    "texto": "O que caracteriza países desenvolvidos?",
+    "alternativa_a": "Alta taxa de mortalidade",
+    "alternativa_b": "Agricultura de subsistência",
+    "alternativa_c": "Baixa tecnologia",
+    "alternativa_d": "Alta industrialização e qualidade de vida",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 36,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "M",
+    "texto": "O que é urbanização?",
+    "alternativa_a": "Crescimento da população em áreas urbanas",
+    "alternativa_b": "Desenvolvimento rural",
+    "alternativa_c": "Crescimento agrícola",
+    "alternativa_d": "Crescimento costeiro",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 37,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "D",
+    "texto": "Efeito do desmatamento da Amazônia.",
+    "alternativa_a": "Apenas gera madeira",
+    "alternativa_b": "Só causa chuvas locais",
+    "alternativa_c": "Impacta o clima mundial, aumentando o aquecimento global",
+    "alternativa_d": "Não afeta o clima",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 38,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "D",
+    "texto": "Importância geopolítica do Oriente Médio.",
+    "alternativa_a": "População reduzida",
+    "alternativa_b": "Agricultura avançada",
+    "alternativa_c": "Minérios abundantes",
+    "alternativa_d": "Grandes reservas de petróleo",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 39,
+  "fields": {
+    "materia": "geografia",
+    "dificuldade": "D",
+    "texto": "Globalização e desigualdade.",
+    "alternativa_a": "Elimina fronteiras",
+    "alternativa_b": "Faz todos ricos",
+    "alternativa_c": "Garante igualdade social",
+    "alternativa_d": "Amplia diferenças econômicas",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 40,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "F",
+    "texto": "Fórmula da Velocidade Média:",
+    "alternativa_a": "v = m . a",
+    "alternativa_b": "v = F/m",
+    "alternativa_c": "v = F . d",
+    "alternativa_d": "Nenhuma",
+    "alternativa_e": "v = s/t",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 41,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "F",
+    "texto": "Carro percorre 100 km em 2 h. Velocidade média?",
+    "alternativa_a": "30 km/h",
+    "alternativa_b": "50 km/h",
+    "alternativa_c": "70 km/h",
+    "alternativa_d": "40 km/h",
+    "alternativa_e": "60 km/h",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 42,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "F",
+    "texto": "Unidade da força no SI.",
+    "alternativa_a": "Pascal",
+    "alternativa_b": "Watt",
+    "alternativa_c": "Ampere",
+    "alternativa_d": "Joule",
+    "alternativa_e": "Newton",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 43,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "M",
+    "texto": "Aceleração: de 10 m/s para 30 m/s em 4 s.",
+    "alternativa_a": "5 m/s²",
+    "alternativa_b": "2,5 m/s²",
+    "alternativa_c": "6 m/s²",
+    "alternativa_d": "3 m/s²",
+    "alternativa_e": "4 m/s²",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 44,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "M",
+    "texto": "Energia cinética x potencial.",
+    "alternativa_a": "Cinética = posição, Potencial = movimento",
+    "alternativa_b": "Ambas são iguais",
+    "alternativa_c": "Potencial não existe",
+    "alternativa_d": "Nenhuma",
+    "alternativa_e": "Cinética = movimento, Potencial = posição",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 45,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "M",
+    "texto": "Força sobre corpo de 5 kg com aceleração 4 m/s².",
+    "alternativa_a": "25 N",
+    "alternativa_b": "10 N",
+    "alternativa_c": "15 N",
+    "alternativa_d": "20 N",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 46,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "D",
+    "texto": "Corpo lançado verticalmente a 20 m/s. Altura máxima? (g=10)",
+    "alternativa_a": "20 m",
+    "alternativa_b": "10 m",
+    "alternativa_c": "50 m",
+    "alternativa_d": "40 m",
+    "alternativa_e": "30 m",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 47,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "D",
+    "texto": "Princípio da conservação da quantidade de movimento.",
+    "alternativa_a": "Só vale para líquidos",
+    "alternativa_b": "Em sistema isolado, a quantidade de movimento é constante",
+    "alternativa_c": "Não existe",
+    "alternativa_d": "Só vale na Terra",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 48,
+  "fields": {
+    "materia": "fisica",
+    "dificuldade": "D",
+    "texto": "Potência para levantar 200 N a 10 m em 5 s.",
+    "alternativa_a": "500 W",
+    "alternativa_b": "600 W",
+    "alternativa_c": "200 W",
+    "alternativa_d": "300 W",
+    "alternativa_e": "400 W",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 49,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "F",
+    "texto": "Símbolo do Oxigênio.",
+    "alternativa_a": "Na",
+    "alternativa_b": "H",
+    "alternativa_c": "N",
+    "alternativa_d": "C",
+    "alternativa_e": "O",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 50,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "F",
+    "texto": "O que é átomo?",
+    "alternativa_a": "Molécula",
+    "alternativa_b": "Íon",
+    "alternativa_c": "Elétron",
+    "alternativa_d": "Partícula fundamental da matéria",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 51,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "F",
+    "texto": "Fórmula da água.",
+    "alternativa_a": "O₂",
+    "alternativa_b": "H₂O",
+    "alternativa_c": "HO",
+    "alternativa_d": "OH",
+    "alternativa_e": "H₂",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 52,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "M",
+    "texto": "Diferença entre ligação iônica e covalente.",
+    "alternativa_a": "Ambas iguais",
+    "alternativa_b": "Iônica só em gases",
+    "alternativa_c": "Covalente só em metais",
+    "alternativa_d": "Nenhuma",
+    "alternativa_e": "Iônica = transferência, Covalente = compartilhamento",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 53,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "M",
+    "texto": "Número atômico do Carbono.",
+    "alternativa_a": "4",
+    "alternativa_b": "7",
+    "alternativa_c": "8",
+    "alternativa_d": "6",
+    "alternativa_e": "5",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 54,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "M",
+    "texto": "Balanceie: H₂ + O₂ → H₂O.",
+    "alternativa_a": "H₂ + O₂ → H₂O₂",
+    "alternativa_b": "Nenhuma",
+    "alternativa_c": "H₂ + 2O₂ → H₂O",
+    "alternativa_d": "H₂ + O₂ → H₂O",
+    "alternativa_e": "2H₂ + O₂ → 2H₂O",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 55,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "D",
+    "texto": "O que é oxirredução?",
+    "alternativa_a": "Reação de combustão",
+    "alternativa_b": "Reação sem elétrons",
+    "alternativa_c": "Reação de neutralização",
+    "alternativa_d": "Reação com transferência de elétrons",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 56,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "D",
+    "texto": "Massa molar do H₂SO₄.",
+    "alternativa_a": "100 g/mol",
+    "alternativa_b": "98 g/mol",
+    "alternativa_c": "94 g/mol",
+    "alternativa_d": "92 g/mol",
+    "alternativa_e": "96 g/mol",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 57,
+  "fields": {
+    "materia": "quimica",
+    "dificuldade": "D",
+    "texto": "Diferença de pH ácido, básico e neutro.",
+    "alternativa_a": "Todos = 7",
+    "alternativa_b": "Ácido > 7",
+    "alternativa_c": "Básico < 7",
+    "alternativa_d": "Ácido < 7, Neutro = 7, Básico > 7",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 58,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "F",
+    "texto": "Molécula que carrega informação genética.",
+    "alternativa_a": "RNA",
+    "alternativa_b": "Proteína",
+    "alternativa_c": "Lipídio",
+    "alternativa_d": "Glicose",
+    "alternativa_e": "DNA",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 59,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "F",
+    "texto": "O que é célula?",
+    "alternativa_a": "Unidade fundamental da vida",
+    "alternativa_b": "Molécula",
+    "alternativa_c": "Órgão",
+    "alternativa_d": "Tecido",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "A"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 60,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "F",
+    "texto": "Função da clorofila.",
+    "alternativa_a": "Produzir energia química",
+    "alternativa_b": "Sintetizar proteínas",
+    "alternativa_c": "Realizar fotossíntese",
+    "alternativa_d": "Armazenar glicose",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "C"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 61,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "M",
+    "texto": "Diferença respiração aeróbica x anaeróbica.",
+    "alternativa_a": "Ambas usam O₂",
+    "alternativa_b": "Aeróbica usa O₂, Anaeróbica não",
+    "alternativa_c": "Anaeróbica usa O₂, Aeróbica não",
+    "alternativa_d": "Todas iguais",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 62,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "M",
+    "texto": "O que é mutação genética?",
+    "alternativa_a": "Reprodução",
+    "alternativa_b": "Alteração no material genético",
+    "alternativa_c": "Divisão celular",
+    "alternativa_d": "Síntese proteica",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 63,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "M",
+    "texto": "Função dos ribossomos.",
+    "alternativa_a": "Transporte de nutrientes",
+    "alternativa_b": "Fotossíntese",
+    "alternativa_c": "Respiração celular",
+    "alternativa_d": "Armazenamento",
+    "alternativa_e": "Síntese de proteínas",
+    "resposta_correta": "E"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 64,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "D",
+    "texto": "Processo de mitose.",
+    "alternativa_a": "Não existe fases",
+    "alternativa_b": "Só ocorre em bactérias",
+    "alternativa_c": "2 fases",
+    "alternativa_d": "4 fases: prófase, metáfase, anáfase, telófase",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "D"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 65,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "D",
+    "texto": "Relação DNA, RNA e proteínas.",
+    "alternativa_a": "RNA não tem relação",
+    "alternativa_b": "DNA → RNA → Proteínas",
+    "alternativa_c": "RNA → DNA",
+    "alternativa_d": "Proteínas produzem RNA",
+    "alternativa_e": "Nenhuma",
+    "resposta_correta": "B"
+  }
+},
+{
+  "model": "simula.questao",
+  "pk": 66,
+  "fields": {
+    "materia": "biologia",
+    "dificuldade": "D",
+    "texto": "Seleção natural na evolução.",
+    "alternativa_a": "Nenhuma espécie sobrevive",
+    "alternativa_b": "Todas sobrevivem igualmente",
+    "alternativa_c": "Só funciona em plantas",
+    "alternativa_d": "Depende do acaso",
+    "alternativa_e": "Espécies mais adaptadas sobrevivem",
+    "resposta_correta": "E"
+  }
+}
+]
