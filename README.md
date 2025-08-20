@@ -70,7 +70,7 @@ Para executar este projeto na sua máquina, siga os passos abaixo.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/MateusFerreiraM/Simula.git](https://github.com/MateusFerreiraM/Simula.git)
+    git clone https://github.com/MateusFerreiraM/Simula.git
     cd Simula
     ```
 
